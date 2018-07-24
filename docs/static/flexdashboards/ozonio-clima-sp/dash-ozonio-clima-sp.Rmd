@@ -1,0 +1,282 @@
+---
+title: "Parque Dom Pedro II"
+output: 
+  flexdashboard::flex_dashboard
+---
+
+```{r, include=FALSE}
+source("functions.R")
+source("preamble.R")
+```
+
+Temperatura
+=====================================  
+
+Column {data-width=500}
+-------------------------------------
+    
+### Ridges plot
+    
+```{r}
+ridges_plot(df_tarde_DPII, month, vars(tp, morning_tp), 
+            xlab = "Celsius", ylab = "Month",
+            facets_names = c(tp = "Afternoon temperature",
+                             morning_tp = "Morning temperature"))
+```
+   
+Column {data-width=500} {.tabset}
+-------------------------------------
+
+### Gráfico das séries
+
+```{r}
+series_plot(df_tarde_DPII, date, vars(tp, morning_tp, o3_mass_conc),
+            xlab = "Year", ylab = "Value",
+            facets_names = c(tp = "Afternoon temperature",
+                             morning_tp = "Morning temperature",
+                             o3_mass_conc = "Ozone"))
+```
+
+### Gráfico de dispersão
+
+```{r}
+scatter_plot(df_tarde_DPII, o3_mass_conc, vars(tp, morning_tp),
+            xlab = "Celsius", ylab = "Ozone",
+            facets_names = c(tp = "Afternoon temperature",
+                             morning_tp = "Morning temperature"))
+```
+
+Radiação
+===================================== 
+
+Column {data-width=500}
+-------------------------------------
+    
+### Ridges plot
+    
+```{r}
+ridges_plot(df_tarde_DPII, month, vars(rd, morning_rd), 
+            xlab = expression(W/m^2), ylab = "Month",
+            facets_names = c(rd = "Afternoon radiation",
+                             morning_rd = "Morning radiation"))
+```
+   
+Column {data-width=500} {.tabset}
+-------------------------------------
+
+### Gráfico das séries
+
+```{r}
+series_plot(df_tarde_DPII, date, vars(rd, morning_rd, o3_mass_conc),
+            xlab = "Year", ylab = "Value",
+            facets_names = c(rd = "Afternoon radiation",
+                             morning_rd = "Morning radiation",
+                             o3_mass_conc = "Ozone"))
+```
+
+### Gráfico de dispersão
+
+```{r}
+scatter_plot(df_tarde_DPII, o3_mass_conc, vars(rd, morning_rd),
+            xlab = expression(W/m^2), ylab = "Ozone",
+            facets_names = c(rd = "Afternoon radiaiton",
+                             morning_rd = "Morning radiation"))
+```
+
+Precipitação
+=====================================  
+
+Column {data-width=500}
+-------------------------------------
+    
+### Ridges plot
+    
+```{r}
+ridges_plot(df_tarde_DPII, month, vars(pp, morning_pp), 
+            xlab = "mm/h", ylab = "Month",
+            facets_names = c(pp = "Afternoon precipitation",
+                             morning_pp = "Morning precipitation"))
+```
+   
+Column {data-width=500} {.tabset}
+-------------------------------------
+
+### Gráfico das séries
+
+```{r}
+series_plot(df_tarde_DPII, date, vars(pp, morning_pp, o3_mass_conc),
+            xlab = "Year", ylab = "Value",
+            facets_names = c(pp = "Afternoon precipitation",
+                             morning_pp = "Morning precipitation",
+                             o3_mass_conc = "Ozone"))
+```
+
+### Gráfico de dispersão
+
+```{r}
+scatter_plot(df_tarde_DPII, o3_mass_conc, vars(pp, morning_pp),
+            xlab = "mm/h", ylab = "Ozone",
+            facets_names = c(pp = "Afternoon precipitation",
+                             morning_pp = "Morning precipitation"))
+```
+
+
+Precipitação (categ)
+=====================================
+
+Column {data-width=500}
+-------------------------------------
+
+### Ridges plot
+
+```{r}
+df_tarde_DPII %>% 
+  mutate(pp_c = ifelse(pp == 0, "Não", "Sim"),
+         morning_pp_c = ifelse(morning_pp == 0, "Não", "Sim")) %>%
+  na.omit %>% 
+  tidyr::gather(period, pp, pp_c, morning_pp_c) %>% 
+  ggplot(aes(x = o3_mass_conc, y = pp, fill = pp)) +
+  geom_density_ridges(show.legend = FALSE) +
+  facet_wrap(~period, scales = "free",
+             labeller = as_labeller(c(pp_c = "Afternoon precipitation",
+                                      morning_pp_c = "Morning precipitation"))) +
+  theme_bw() +
+  labs(y = "Precipitation", x = "Ozone") 
+```
+
+Column {data-width=500}
+-------------------------------------
+
+### Boxplots
+
+```{r}
+df_tarde_DPII %>% 
+  mutate(pp_c = ifelse(pp == 0, "Não", "Sim"),
+         morning_pp_c = ifelse(morning_pp == 0, "Não", "Sim")) %>%
+  na.omit %>% 
+  select(date, o3_mass_conc, pp_c, morning_pp_c) %>% 
+  na.omit %>% 
+  tidyr::gather(period, precipitation, pp_c, morning_pp_c) %>% 
+  ggplot(aes(x = period, y = o3_mass_conc, fill = precipitation)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(fill = "Precipitation", y = "Ozone", x = "Period") +
+  scale_x_discrete(labels = c("Morning", "Afternoon"))
+```
+
+
+Umidade
+===================================== 
+
+Column {data-width=500}
+-------------------------------------
+    
+### Ridges plot
+    
+```{r}
+ridges_plot(df_tarde_DPII, month, vars(hm, morning_hm), 
+            xlab = "%", ylab = "Month",
+            facets_names = c(hm = "Afternoon humidity",
+                             morning_hm = "Morning humidity"))
+```
+   
+Column {data-width=500} {.tabset}
+-------------------------------------
+
+### Gráfico das séries
+
+```{r}
+series_plot(df_tarde_DPII, date, vars(hm, morning_hm, o3_mass_conc),
+            xlab = "Year", ylab = "Value",
+            facets_names = c(hm = "Afternoon humidity",
+                             morning_hm = "Morning humidity",
+                             o3_mass_conc = "Ozone"))
+```
+
+### Gráfico de dispersão
+
+```{r}
+scatter_plot(df_tarde_DPII, o3_mass_conc, vars(hm, morning_hm),
+            xlab = "%", ylab = "Ozone",
+            facets_names = c(hm = "Afternoon humidity",
+                             morning_hm = "Morning humidity"))
+```
+
+Velocidade do vento
+=====================================
+
+Column {data-width=500}
+-------------------------------------
+    
+### Ridges plot
+    
+```{r}
+ridges_plot(df_tarde_DPII, month, vars(ws, morning_ws), 
+            xlab = "m/s", ylab = "Month",
+            facets_names = c(ws = "Afternoon wind speed",
+                             morning_ws = "Morning wind speed"))
+```
+   
+Column {data-width=500} {.tabset}
+-------------------------------------
+
+### Gráfico das séries
+
+```{r}
+series_plot(df_tarde_DPII, date, vars(ws, morning_ws, o3_mass_conc),
+            xlab = "Year", ylab = "Value",
+            facets_names = c(ws = "Afternoon wind speed",
+                             morning_ws = "Morning wind speed",
+                             o3_mass_conc = "Ozone"))
+```
+
+### Gráfico de dispersão
+
+```{r}
+scatter_plot(df_tarde_DPII, o3_mass_conc, vars(ws, morning_ws),
+            xlab = "m/s", ylab = "Ozone",
+            facets_names = c(ws = "Afternoon wind speed",
+                             morning_ws = "Morning wind speed"))
+```
+
+Inversão térmica
+=====================================
+
+Column {data-width=500}
+-------------------------------------
+
+### Ridges plot
+
+```{r}
+df_tarde_DPII %>% 
+  na.omit %>% 
+  tidyr::gather(period, inversao, dv_ti_0to199m_9am, dv_ti_200to499m_9am) %>%
+  mutate(inversao = ifelse(inversao == 1, "Sim", "Não")) %>% 
+  ggplot(aes(x = o3_mass_conc, y = inversao, fill = inversao)) +
+  geom_density_ridges(show.legend = FALSE) +
+  facet_wrap(~period, scales = "free",
+             labeller = as_labeller(c(dv_ti_0to199m_9am = "0 a 199 metros",
+                                      dv_ti_200to499m_9am = "200 a 499 metros"))) +
+  theme_bw() +
+  labs(y = "Precipitation", x = "Ozone") 
+```
+
+Column {data-width=500}
+-------------------------------------
+
+### Boxplots
+
+```{r}
+df_tarde_DPII %>%
+  select(date, o3_mass_conc, dv_ti_0to199m_9am, dv_ti_200to499m_9am) %>% 
+  na.omit %>% 
+  tidyr::gather(period, inversao, dv_ti_0to199m_9am, dv_ti_200to499m_9am) %>%
+  mutate(inversao = as.factor(inversao)) %>% 
+  ggplot(aes(x = period, y = o3_mass_conc, fill = inversao)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(fill = "Thermal inversion", y = "Ozone", x = "Period") +
+  scale_x_discrete(labels = c("0 a 199 metros", "200 a 499 metros")) +
+  scale_fill_discrete(labels = c("No", "Yes"))
+```
+

@@ -1,0 +1,39 @@
+---
+title: "R-Music"
+description: |
+  Music data extraction & analysis in R
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+Music information retrieval is a recent study 
+field, with a wide range of topics yet to be
+explored. It combines computational tools with 
+theory to amplify the utility and applications of 
+music and audio data. These data has many forms
+of representation, each one carrying different
+levels of information. Music, for example, can be 
+represented by music sheets, chords, lyrics, 
+MIDI and audio files, and so on.
+
+This blog has as one if its main goals to explore
+these different type of data in R. Some of the packages
+used here are:
+
+  - [`vagalumeR`](https://github.com/r-music/vagalumeR)
+  - [`chorrrds`](https://github.com/r-music/chorrrds)
+  - [`music21`](https://github.com/r-music/music21)
+  - [`tabr`](https://github.com/leonawicz/tabr)
+  - [`Rspotify`](https://github.com/tiagomendesdantas/Rspotify)
+  - [`seewave`](https://github.com/cran/seewave)
+
+
+There are two maintainers: [Bruna Wundervald](brunaw.com), 
+a statistician, and [Julio Trecenti](https://github.com/jtrecenti), a PhD
+candidate in Statistics at the University of São Paulo. 
+Any kind of contribution is highly incentivated, 
+so you can let us know if you would like to be a part of
+this project.

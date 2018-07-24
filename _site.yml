@@ -1,0 +1,15 @@
+name: "r-music"
+title: "R-Music"
+description: |
+  Music data extraction & analysis in R
+output_dir: "docs"
+base_url: https://r-music.github.io
+navbar:
+  right:
+    - text: "Home"
+      href: about.html
+    - text: "Posts"
+      href: about.html
+output:
+  radix::radix_article:
+    css: styles.css
