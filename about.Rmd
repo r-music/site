@@ -31,9 +31,8 @@ used here are:
   - [`seewave`](https://github.com/cran/seewave)
 
 
-There are two maintainers: [Bruna Wundervald](brunaw.com), 
-a statistician, and [Julio Trecenti](https://github.com/jtrecenti), a PhD
-candidate in Statistics at the University of São Paulo. 
+There are two main maintainers: [Bruna Wundervald](https://brunaw.com) 
+and [Julio Trecenti](https://github.com/jtrecenti). 
 Any kind of contribution is highly incentivated, 
 so you can let us know if you would like to be a part of
-this project.
+this project or have any suggestions about it.
