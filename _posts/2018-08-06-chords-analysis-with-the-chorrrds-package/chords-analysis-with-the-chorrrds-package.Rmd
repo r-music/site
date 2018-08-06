@@ -1,11 +1,10 @@
 ---
-title: "chorrrds tutorial"
+title: "Chords analysis with the chorrrds package"
 description: |
   A short description of the post.
 author:
-  - name: jtrecenti
-  - name: brunaw
-date: 08-05-2018
+  - name: Unknown
+date: 08-06-2018
 output:
   radix::radix_article:
     self_contained: false
@@ -86,4 +85,6 @@ songs <- chorrrds::get_songs("buarque")
 chords <- chorrrds::get_chords(songs$url[2])
 chords_clean <- chorrrds::clean(chords)
 ```
+
+
 
