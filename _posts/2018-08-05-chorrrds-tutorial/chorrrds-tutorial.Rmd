@@ -1,0 +1,57 @@
+---
+title: "chorrrds tutorial"
+description: |
+  A short description of the post.
+author:
+  - name: jtrecenti
+  - name: brunaw
+date: 08-05-2018
+output:
+  radix::radix_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Intro
+
+`chorrrds` is a package to retrieve and analyse music. It scrapes the [*Cifraclub*]() website to download and organize music chords.
+
+The main reason to create `chorrrds` was Bruna's undergrad thesis. In her work, she did an end-to-end analysis, exploring feature engineering techniques to describe and predict musical genres from music chord representation.
+
+`chorrrds` can be considered a package for MIR (Music Information Retrieval). MIR is a broad area of computational music which extracts and processes from unstructured data like sound waves to structured data like sheet music or chords.
+
+In this post we'll describe `chorrrds` main functions and show some examples. Stay tuned!
+
+## Installation
+
+You can install `chorrrds` from your favourite CRAN mirror running
+
+```{r eval=FALSE}
+install.packages("chorrrds")
+```
+
+You can install the latest versions of chorrrds from the R-Music GitHub Organization with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("r-music/chorrrds")
+```
+
+## Functions
+
+## Data
+
+There are many datasets to consider
+
+## Use case
+
+```{r}
+chorrrds::search_data("buarque")
+songs <- chorrrds::get_songs("buarque")
+chords <- chorrrds::get_chords(songs$url[2])
+chords_clean <- chorrrds::clean(chords)
+```
+
