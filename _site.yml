@@ -9,7 +9,7 @@ navbar:
     - text: "Home"
       href: about.html
     - text: "Posts"
-      href: about.html
+      href: index.html
 output:
   radix::radix_article:
     css: styles.css
