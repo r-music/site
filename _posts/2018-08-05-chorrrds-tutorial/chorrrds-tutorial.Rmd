@@ -17,23 +17,31 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Intro
 
-`chorrrds` is a package to retrieve and analyse music. It scrapes the [*Cifraclub*]() website to download and organize music chords.
+`chorrrds` is a package to retrieve and analyse music. It scrapes 
+the [*Cifraclub*]() website to download and organize music chords.
 
-The main reason to create `chorrrds` was Bruna's undergrad thesis. In her work, she did an end-to-end analysis, exploring feature engineering techniques to describe and predict musical genres from music chord representation.
+The main reason to create `chorrrds` was Bruna's undergrad thesis. In 
+her work, she did an end-to-end analysis, exploring feature engineering
+techniques to describe and predict musical genres from music chord 
+representation.
 
-`chorrrds` can be considered a package for MIR (Music Information Retrieval). MIR is a broad area of computational music which extracts and processes from unstructured data like sound waves to structured data like sheet music or chords.
+`chorrrds` can be considered a package for MIR (Music Information 
+Retrieval). MIR is a broad area of computational music which extracts 
+and processes from unstructured data like sound waves to structured 
+data like sheet music or chords.
 
-In this post we'll describe `chorrrds` main functions and show some examples. Stay tuned!
+In this post we'll describe `chorrrds` functions and show 
+some examples. Stay tuned!
 
 ## Installation
 
-You can install `chorrrds` from your favourite CRAN mirror running
+You can install `chorrrds` from your favourite CRAN mirror, simply running:
 
 ```{r eval=FALSE}
 install.packages("chorrrds")
 ```
 
-You can install the latest versions of chorrrds from the R-Music GitHub Organization with:
+You can also install the latest versions of `chorrrds` from the R-Music GitHub Organization with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
@@ -41,6 +49,30 @@ devtools::install_github("r-music/chorrrds")
 ```
 
 ## Functions
+
+The main function of the package is called `get_chords()` and it
+extracts music chords from a specific artist. This happens in 
+two steps:
+  1. Extraction of song links for each music of an artist with `get_songs`.
+  2. Extraction of music chords using the links with `get_chords`.
+
+```{r, warning=FALSE}
+library(magrittr)
+
+# Getting the chords for some Janis Joplin songs
+songs <- "janis-joplin" %>% 
+  chorrrds::get_songs() %>% 
+  dplyr::slice(1:10)
+
+chords <- songs %>% 
+  dplyr::pull(url) %>% 
+  purrr::map(chorrrds::get_chords) %>%
+  purrr::map_dfr(dplyr::mutate_if, is.factor, as.character) 
+
+head(chords, 15)
+```
+
+
 
 ## Data
 
