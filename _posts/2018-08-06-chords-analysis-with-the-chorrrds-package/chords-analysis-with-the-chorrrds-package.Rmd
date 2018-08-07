@@ -1,7 +1,7 @@
 ---
 title: "Chords analysis with the chorrrds package"
 description: |
-  A short description of the post.
+  A short description of the post!.
 author:
   - name: Unknown
 date: 08-06-2018
@@ -79,7 +79,7 @@ There are many datasets to consider
 
 ## Use case
 
-```{r}
+```{r eval=FALSE}
 chorrrds::search_data("buarque")
 songs <- chorrrds::get_songs("buarque")
 chords <- chorrrds::get_chords(songs$url[2])

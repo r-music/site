@@ -8,5 +8,13 @@
 </description>
     <generator>Radix</generator>
     <lastBuildDate>seg, 06 ago 2018 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Chords analysis with the chorrrds package</title>
+      <dc:creator>Unknown</dc:creator>
+      <link>https://r-music.rbind.io/posts/2018-08-06-chords-analysis-with-the-chorrrds-package</link>
+      <description>A short description of the post.</description>
+      <guid>https://r-music.rbind.io/posts/2018-08-06-chords-analysis-with-the-chorrrds-package</guid>
+      <pubDate>seg, 06 ago 2018 00:00:00 +0000</pubDate>
+    </item>
   </channel>
 </rss>

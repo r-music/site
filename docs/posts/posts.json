@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "path": "posts/2018-08-06-chords-analysis-with-the-chorrrds-package/",
+    "title": "Chords analysis with the chorrrds package",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Unknown",
+        "url": {}
+      }
+    ],
+    "date": "2018-08-06",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2018-08-06T22:20:23-03:00"
+  }
+]
