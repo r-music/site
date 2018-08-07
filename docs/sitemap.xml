@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
   <url>
     <loc>https://r-music.rbind.io/about.html</loc>
-    <lastmod>2018-08-06T22:09:35-03:00</lastmod>
+    <lastmod>2018-08-06T22:42:58-03:00</lastmod>
   </url>
   <url>
     <loc>https://r-music.rbind.io/</loc>
-    <lastmod>2018-08-06T22:09:35-03:00</lastmod>
+    <lastmod>2018-08-06T22:43:01-03:00</lastmod>
   </url>
   <url>
     <loc>https://r-music.rbind.io/posts/2018-08-06-chords-analysis-with-the-chorrrds-package/</loc>

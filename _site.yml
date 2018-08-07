@@ -6,10 +6,10 @@ output_dir: "docs"
 base_url: https://r-music.rbind.io
 navbar:
   right:
-    - text: "Home"
-      href: about.html
     - text: "Posts"
       href: index.html
+    - text: "About"
+      href: about.html
 output:
   radix::radix_article:
     css: styles.css
