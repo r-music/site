@@ -5,13 +5,17 @@
     "description": "A short description of the post!.",
     "author": [
       {
-        "name": "Unknown",
-        "url": {}
+        "name": "Bruna Wundervald",
+        "url": "https://brunaw.com"
+      },
+      {
+        "name": "Julio Trecenti",
+        "url": "https://github.com/jtrecenti"
       }
     ],
     "date": "2018-08-06",
     "categories": [],
     "preview": {},
-    "last_modified": "2018-08-06T22:26:16-03:00"
+    "last_modified": "2018-08-17T19:49:29-03:00"
   }
 ]

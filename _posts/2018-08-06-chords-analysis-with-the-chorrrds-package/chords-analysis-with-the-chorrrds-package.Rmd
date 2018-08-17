@@ -3,20 +3,29 @@ title: "Chords analysis with the chorrrds package"
 description: |
   A short description of the post!.
 author:
-  - name: Unknown
+  - name: "Bruna Wundervald"
+    url: https://brunaw.com
+    affiliation: Curso-R
+    affiliation_url: http://curso-r.com/
+  - name: "Julio Trecenti"
+    url: https://github.com/jtrecenti
+    affiliation: Curso-R
+    affiliation_url: http://curso-r.com/
 date: 08-06-2018
 output:
   radix::radix_article:
     self_contained: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Intro
 
-`chorrrds` is a package to retrieve and analyse music. It scrapes 
+`chorrrds` is a package to retrieve and analyse music data. It scrapes 
 the [*Cifraclub*]() website to download and organize music chords.
 
 The main reason to create `chorrrds` was Bruna's undergrad thesis. In 
@@ -36,11 +45,12 @@ some examples. Stay tuned!
 
 You can install `chorrrds` from your favourite CRAN mirror, simply running:
 
-```{r eval=FALSE}
+```{r, eval = FALSE}
 install.packages("chorrrds")
 ```
 
-You can also install the latest versions of `chorrrds` from the R-Music GitHub Organization with:
+You can also install the latest versions of `chorrrds` from the 
+R-Music GitHub Organization with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
@@ -49,42 +59,168 @@ devtools::install_github("r-music/chorrrds")
 
 ## Functions
 
-The main function of the package is called `get_chords()` and it
-extracts music chords from a specific artist. This happens in 
+The main function of the package is called `get_chords()`. It
+extracts music chords from an specific artist. This happens in 
 two steps:
   1. Extraction of song links for each music of an artist with `get_songs`.
   2. Extraction of music chords using the links with `get_chords`.
 
-```{r, warning=FALSE}
-library(magrittr)
+```{r, warning=FALSE, results='asis'}
+library(tidyverse) 
+set.seed(20191)
 
 # Getting the chords for some Janis Joplin songs
 songs <- "janis-joplin" %>% 
   chorrrds::get_songs() %>% 
-  dplyr::slice(1:10)
+  dplyr::sample_n(5)        # Selecting the first 5 song urls 
 
 chords <- songs %>% 
-  dplyr::pull(url) %>% 
-  purrr::map(chorrrds::get_chords) %>%
-  purrr::map_dfr(dplyr::mutate_if, is.factor, as.character) 
+  dplyr::pull(url) %>%                     
+  purrr::map(chorrrds::get_chords) %>%     # Mapping the function over the 
+                                           # selected urls
+  purrr::map_dfr(dplyr::mutate_if, is.factor, as.character)   %>% 
+  chorrrds::clean(message = FALSE)         # Cleans the dataset, in case
+                                           # strange elements, as music lyrics, 
+                                           # are present when they shouldn't
 
-head(chords, 15)
+chords %>% slice(1:10) %>% knitr::kable()
 ```
 
+The table above shows us how are the results of the `get_chords`
+function. As you can see, the data is in a long format: the chords 
+appear in the sequence they are in each music, being repeated
+sometimes.
+
+As you can see, the `music` column contains the name of the artist
+and the name of the song. This can be changed if preferred, 
+with: 
+
+```{r}
+# chords <- chords %>% 
+#   dplyr::mutate(artist = "janis joplin", 
+#                 music = stringr::str_remove(music, stringr::str_c(artist, " ")))
+
+chords <- chords %>% 
+  tidyr::separate(music, c("artist", "music"), 
+                  sep = "(?<=joplin) ", extra = "merge")
+
+
+chords %>% slice(1:10) %>% knitr::kable()
+```
 
 
 ## Data
 
-There are many datasets to consider
+There are many datasets that come with the package. This data was
+used in the undergrad thesis, so it was a choice to 
+just keep it in the package. The data is composed of the music chords
+of several brazilian artists. You can check the available data with the 
+code above, which won't be run here because the results are extensive: 
+
+```{r, eval = FALSE}
+library(chorrrds)
+ls("package:chorrrds")                 
+```
+
 
 ## Use case
 
-```{r eval=FALSE}
-chorrrds::search_data("buarque")
-songs <- chorrrds::get_songs("buarque")
-chords <- chorrrds::get_chords(songs$url[2])
-chords_clean <- chorrrds::clean(chords)
+Returning to the data we collected before, let's explore it! 
+
+The first thing we can look at is the most common chords in 
+each musics. Which are the common chords in music made
+by Janis Joplin? Are the proportions of these chords
+similar between the songs? 
+
+```{r}
+chords %>% 
+  dplyr::group_by(music) %>% 
+  dplyr::count(chord) %>%
+  dplyr::top_n(n, n = 3) %>%
+  dplyr::mutate(prop = scales::percent(n/sum(n))) %>% 
+  knitr::kable()
 ```
+
+With the dataset analyzed here, we can already
+extract some interesting information. For some of it, 
+as the first and second pieces, the 3 most common chords 
+appeared in a close proportion. For the others,
+this happens in a different way. Both the proportions and
+the absolute quantities of the chords vary more.
+That shows us that the structure her songs don't 
+follow a closed pattern, which can be a sign of how 
+creative the artist was. 
+
+We can also look to something called "chord bigrams". This
+is pretty much creating to each pair of chords that 
+happened in sequence and analyzing their frequencies. 
+
+```{r}
+chords %>%
+  dplyr::group_by(music) %>% 
+  tidytext::unnest_tokens(bigram, chord, to_lower = FALSE,
+                          token = "ngrams", n = 2) %>% 
+  dplyr::count(bigram) %>% 
+  dplyr::arrange(music, dplyr::desc(n)) %>% 
+  dplyr::slice(1:2) %>% 
+  knitr::kable()
+```
+
+There are some bigrams that happen a lot in a song, while 
+others just a few times, but are still the most frequent ones. In 
+the song called "Piece of my heart", we have the repetition
+of the chord "B" several times, which is described by
+the appearance of the "B-B" bigram. 
+
+
+Now, we have already explored the data a little bit. We can
+make it event more interesting, by building a chord diagram. 
+The word "chord" here does not mean the musical one, but a
+graphic element that shows us the strength of a connection. 
+The connections will be the observed chord transitions in our
+selected songs, and their strengths, how many times each
+transition happened. With this configuration, the chord
+diagram will make the relationship between each chord
+explicit. 
+
+```{r, warning = FALSE}
+# devtools::install_github("mattflor/chorddiag")
+library(chorddiag)
+
+comp <- chords %>% 
+  dplyr::mutate(seq = lead(chord)) %>% 
+  dplyr::filter(chord != seq) %>% 
+  dplyr::group_by(chord, seq) %>%  
+  dplyr::summarise(n = n())
+
+mat <- tidyr::spread(comp, key = chord, value = n, fill = 0)  
+mm <- as.matrix(mat[-19, -1]) 
+
+# Builds the interactive diagram
+chorddiag::chorddiag(mm, showTicks = FALSE,
+                     palette = "Reds")
+```
+
+Now we can clearly see how the transitions behave 
+in the songs we're using. There are strong 
+connections between the chord A and E, A and 
+B, and the others are, in general, fragmented.   
+
+## Wrap up
+
+In this blog post, we:   
+  - introduced the `chorrrds` package, which
+  extracts chords from the songs of an artist.
+  - we used Janis Joplin songs as example of how
+  the extraction is done. 
+  - we presented a brief summary of these
+  music chords, along with a chord diagram.  
+  
+`chorrrds` is a new package, with a lot of 
+potential and many possible applications
+to be explores. We hope this was useful, and 
+that now you're starting to be as enchanted by
+music information retrieval as we are!
 
 
 
