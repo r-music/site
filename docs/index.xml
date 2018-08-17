@@ -9,11 +9,11 @@
     <generator>Radix</generator>
     <lastBuildDate>Seg, 06 Ago 2018 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Chords analysis with the chorrrds package</title>
+      <title>Introduction to the chorrrds package</title>
       <dc:creator>Bruna Wundervald</dc:creator>
       <dc:creator>Julio Trecenti</dc:creator>
       <link>https://r-music.rbind.io/posts/2018-08-06-chords-analysis-with-the-chorrrds-package</link>
-      <description>A short description of the post!.</description>
+      <description>Music chords analysis!</description>
       <guid>https://r-music.rbind.io/posts/2018-08-06-chords-analysis-with-the-chorrrds-package</guid>
       <pubDate>Seg, 06 Ago 2018 00:00:00 +0000</pubDate>
     </item>

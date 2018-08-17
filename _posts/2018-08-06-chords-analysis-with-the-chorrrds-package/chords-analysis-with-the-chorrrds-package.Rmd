@@ -1,7 +1,7 @@
 ---
-title: "Chords analysis with the chorrrds package"
+title: "Introduction to the chorrrds package"
 description: |
-  A short description of the post!.
+  Music chords analysis!
 author:
   - name: "Bruna Wundervald"
     url: https://brunaw.com
@@ -209,6 +209,7 @@ B, and the others are, in general, fragmented.
 ## Wrap up
 
 In this blog post, we:   
+
   - introduced the `chorrrds` package, which
   extracts chords from the songs of an artist.
   - we used Janis Joplin songs as example of how
