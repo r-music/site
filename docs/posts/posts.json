@@ -1,6 +1,6 @@
 [
   {
-    "path": "posts/2018-08-06-chords-analysis-with-the-chorrrds-package/",
+    "path": "posts/2018-08-19-chords-analysis-with-the-chorrrds-package/",
     "title": "Introduction to the chorrrds package",
     "description": "Music chords analysis!",
     "author": [
@@ -13,9 +13,9 @@
         "url": "https://github.com/jtrecenti"
       }
     ],
-    "date": "2018-08-06",
+    "date": "2018-08-19",
     "categories": [],
     "preview": {},
-    "last_modified": "2018-08-17T20:05:06-03:00"
+    "last_modified": "2018-08-19T11:25:15-03:00"
   }
 ]

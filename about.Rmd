@@ -13,15 +13,15 @@ Music information retrieval is a recent study
 field, with a wide range of topics yet to be
 explored. It combines computational tools with 
 theory to amplify the utility and applications of 
-music and audio data. These data has many forms
+music and audio data. These data have many forms
 of representation, each one carrying different
 levels of information. Music, for example, can be 
 represented by music sheets, chords, lyrics, 
 MIDI and audio files, and so on.
 
-This blog has as one if its main goals to explore
-these different type of data in R. Some of the packages
-used here are:
+This blog has as its main goals to show how to extract
+and explore these different type of data in R. Some of 
+the packages used here are:
 
   - [`vagalumeR`](https://github.com/r-music/vagalumeR)
   - [`chorrrds`](https://github.com/r-music/chorrrds)
@@ -33,6 +33,6 @@ used here are:
 
 There are two main maintainers: [Bruna Wundervald](https://brunaw.com) 
 and [Julio Trecenti](https://github.com/jtrecenti). 
-Any kind of contribution is highly incentivated, 
+Any kind of contribution is highly incentivized, 
 so you can let us know if you would like to be a part of
-this project or have any suggestions about it.
+this project or have any suggestions.
