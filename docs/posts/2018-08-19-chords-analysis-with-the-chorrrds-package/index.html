@@ -569,44 +569,6 @@ pre.text-output {
 }
 }
 
-/* Figure */
-
-.figure {
-  position: relative;
-  margin-bottom: 2.5em;
-  margin-top: 1.5em;
-}
-
-.figure img {
-  width: 100%;
-}
-
-.figure .caption {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 12px;
-  line-height: 1.5em;
-}
-
-.figure img.external {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
-  padding: 18px;
-  box-sizing: border-box;
-}
-
-.figure .caption a {
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.figure .caption b,
-.figure .caption strong, {
-  font-weight: 600;
-  color: rgba(0, 0, 0, 1.0);
-}
-
-
-
 /* Tweak 1000px media break to show more text */
 
 @media(min-width: 1000px) {
@@ -633,7 +595,7 @@ pre.text-output {
     font-size: 1.06rem;
     line-height: 1.7em;
   }
-  figure .caption, .figure .caption, figure figcaption {
+  figure .caption {
     font-size: 13px;
   }
 }
@@ -940,7 +902,7 @@ function init_distill() {
     var href = $(this).attr('href');
     var id = href.replace('#', '');
     var fn = $('#' + id);
-    var fn_p = $('#' + id + '>p');
+    var fn_p = $('#fn1>p');
     fn_p.find('.footnote-back').remove();
     var text = fn_p.text();
     var dtfn = $('<d-footnote></d-footnote>');
@@ -1796,6 +1758,38 @@ A cool thing to notice is that the diagram is interactive, then we can see the s
 </ul>
 <p><code>chorrrds</code> is a new package, with a lot of potential and many possible applications to be explored. We hope this was useful, and that now you’re starting to be as enchanted by music information retrieval as we are!</p>
 <!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="disqus-comments">
+      <i class="fas fa-comments"></i>
+      &nbsp;
+      <span class="disqus-comment-count" data-disqus-identifier="posts/2018-08-19-chords-analysis-with-the-chorrrds-package/">Comment on this article</span>
+    </span>
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=Introduction%20to%20the%20chorrrds%20package&amp;url=https%3A%2F%2Fr-music.rbind.io%2Fposts%2F2018-08-19-chords-analysis-with-the-chorrrds-package%2F">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fr-music.rbind.io%2Fposts%2F2018-08-19-chords-analysis-with-the-chorrrds-package%2F&amp;title=Introduction%20to%20the%20chorrrds%20package">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </span>
+  </p>
+  <script id="dsq-count-scr" src="https://jtrecenti.disqus.com/count.js" async></script>
+  <div id="disqus_thread" class="hidden"></div>
+  <script>
+var disqus_config = function () {
+  this.page.url = 'https://r-music.rbind.io/posts/2018-08-19-chords-analysis-with-the-chorrrds-package/';
+  this.page.identifier = 'posts/2018-08-19-chords-analysis-with-the-chorrrds-package/';
+};
+(function() {
+  var d = document, s = d.createElement('script');
+  s.src = 'https://jtrecenti.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+</div>
 <!--/radix_placeholder_article_footer-->
 </div>
 
