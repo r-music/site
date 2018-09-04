@@ -5,7 +5,7 @@ description: |
 output_dir: "docs"
 collections:
   posts:
-    disqus: "jtrecenti"
+    disqus: "r-music"
     share: [twitter, linkedin]
 base_url: https://r-music.rbind.io
 navbar:
