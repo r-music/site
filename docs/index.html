@@ -546,6 +546,44 @@
   }
   }
   
+  /* Figure */
+  
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+  
+  .figure img {
+    width: 100%;
+  }
+  
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+  
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+  
+  
+  
   /* Tweak 1000px media break to show more text */
   
   @media(min-width: 1000px) {
@@ -572,7 +610,7 @@
       font-size: 1.06rem;
       line-height: 1.7em;
     }
-    figure .caption {
+    figure .caption, .figure .caption, figure figcaption {
       font-size: 13px;
     }
   }
@@ -879,7 +917,7 @@
       var href = $(this).attr('href');
       var id = href.replace('#', '');
       var fn = $('#' + id);
-      var fn_p = $('#fn1>p');
+      var fn_p = $('#' + id + '>p');
       fn_p.find('.footnote-back').remove();
       var text = fn_p.text();
       var dtfn = $('<d-footnote></d-footnote>');
@@ -1296,6 +1334,12 @@
   border-bottom: none !important;
 }
 
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 500;
+  font-size: 40px;
+}
+
 .posts-list .post-preview h2 {
   margin: 0 0 6px 0;
   line-height: 1.2em;
@@ -1498,7 +1542,7 @@ function init_posts_list() {
     $('.categories .active').removeClass('active');
 
     // mark all posts invisible to start
-    set_posts_visible($('.posts-list').children(), false);
+    set_posts_visible($('.posts-list').children('a'), false);
 
     // if we have a hash filter
     if (window.location.hash) {
@@ -1564,6 +1608,19 @@ function init_posts_list() {
 
 <div class="posts-container posts-apply-limit l-page">
 <div class="posts-list">
+<a href="posts/2018-10-01-rspotify/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":[]}</script>
+<div class="metadata">
+<div class="publishedDate">Oct. 1, 2018</div>
+</div>
+<div class="thumbnail">
+<img data-src="https://github.com/r-music/site/blob/master/img/Rspotify/logo.png?raw=true"/>
+</div>
+<div class="description">
+<h2>Rspotify</h2>
+<p>R package to connect with the Spotify API.</p>
+</div>
+</a>
 <a href="posts/2018-08-19-chords-analysis-with-the-chorrrds-package/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":[]}</script>
 <div class="metadata">

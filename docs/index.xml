@@ -7,7 +7,17 @@
     <description>Music data extraction &amp; analysis in R
 </description>
     <generator>Radix</generator>
-    <lastBuildDate>dom, 19 ago 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Rspotify</title>
+      <dc:creator>Bruna Wundervald</dc:creator>
+      <dc:creator>Tiago Mendes Dantas</dc:creator>
+      <link>https://r-music.rbind.io/posts/2018-10-01-rspotify</link>
+      <description>R package to connect with the Spotify API.</description>
+      <guid>https://r-music.rbind.io/posts/2018-10-01-rspotify</guid>
+      <pubDate>Mon, 01 Oct 2018 00:00:00 +0000</pubDate>
+      <media:content url="https://github.com/r-music/site/blob/master/img/Rspotify/logo.png?raw=true" medium="image" type="text/plain"/>
+    </item>
     <item>
       <title>Introduction to the chorrrds package</title>
       <dc:creator>Bruna Wundervald</dc:creator>
@@ -15,7 +25,7 @@
       <link>https://r-music.rbind.io/posts/2018-08-19-chords-analysis-with-the-chorrrds-package</link>
       <description>Music chords analysis!</description>
       <guid>https://r-music.rbind.io/posts/2018-08-19-chords-analysis-with-the-chorrrds-package</guid>
-      <pubDate>dom, 19 ago 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
     </item>
   </channel>
 </rss>
