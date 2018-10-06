@@ -62,6 +62,8 @@
 <meta name="citation_author_institution" content="Curso-R"/>
 <!--/radix_placeholder_meta_tags-->
   
+  <meta name="citation_reference" content="citation_title=Music21: A toolkit for computer-aided musicology and symbolic music data;citation_publication_date=2010;citation_publisher=International Society for Music Information Retrieval;citation_author=Michael Scott Cuthbert;citation_author=Christopher Ariza"/>
+  <meta name="citation_reference" content="citation_title=Reticulate: Interface to ’python’;citation_author=JJ Allaire;citation_author=Kevin Ushey;citation_author=Yuan Tang"/>
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
@@ -1351,7 +1353,7 @@ img {
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
-<p>The goal of <code>music21</code> is to have an pipe-able API of <a href="http://web.mit.edu/music21/doc/index.html">music21 python library</a>, created by MIT professor Michael Cuthbert. It uses <a href="https://github.com/rstudio/reticulate"><code>reticulate</code></a> package in the backend.</p>
+<p>The goal of <code>music21</code> is to have an pipe-able API of <a href="http://web.mit.edu/music21/doc/index.html">music21 python library</a> <span class="citation" data-cites="cuthbert2010music21">(Cuthbert and Ariza <a href="#ref-cuthbert2010music21">2010</a>)</span>. It uses <a href="https://github.com/rstudio/reticulate"><code>reticulate</code></a> package in the backend <span class="citation" data-cites="reticulate">(Allaire, Ushey, and Tang, <a href="#ref-reticulate">n.d.</a>)</span>.</p>
 <p>According to <code>music21</code>’s site, it can be used to answer questions like:</p>
 <ul>
 <li>I wonder how often Bach does that.</li>
@@ -1581,6 +1583,14 @@ shiny::runGitHub(&quot;chordgen&quot;, &quot;r-music&quot;, subdir=&quot;inst/ch
 <p><code>music21</code> is just a crawling baby for now. In my opinion, <code>music21</code> can be a great tool for i) structured music data IO and ii) music statistical modeling. The biggest challenge for now is think how to make a <em>tidy</em> API to it.</p>
 <p>What would you like to do with <code>music21</code>? Please comment in the comment section.</p>
 <p>Thanks!</p>
+<div id="refs" class="references">
+<div id="ref-reticulate">
+<p>Allaire, JJ, Kevin Ushey, and Yuan Tang. n.d. <em>Reticulate: Interface to ’Python’</em>. <a href="https://github.com/rstudio/reticulate" class="uri">https://github.com/rstudio/reticulate</a>.</p>
+</div>
+<div id="ref-cuthbert2010music21">
+<p>Cuthbert, Michael Scott, and Christopher Ariza. 2010. “Music21: A Toolkit for Computer-Aided Musicology and Symbolic Music Data.” International Society for Music Information Retrieval.</p>
+</div>
+</div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
   <p class="social_footer">

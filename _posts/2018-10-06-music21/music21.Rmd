@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The goal of `music21` is to have an pipe-able API of [music21 python library](http://web.mit.edu/music21/doc/index.html), created by MIT professor Michael Cuthbert. It uses [`reticulate`](https://github.com/rstudio/reticulate) package in the backend.
+The goal of `music21` is to have an pipe-able API of [music21 python library](http://web.mit.edu/music21/doc/index.html) [@cuthbert2010music21]. It uses [`reticulate`](https://github.com/rstudio/reticulate) package in the backend [@reticulate].
 
 According to `music21`'s site, it can be used to answer questions like:
 
