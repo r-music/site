@@ -3,10 +3,14 @@ title: "music21"
 description: |
   A library for computer-aided musicology.
 author:
-  - name: Bruna Wundervald
+  - name: "Bruna Wundervald"
     url: https://brunaw.com
-  - name: Julio Trecenti
+    affiliation: Maynooth University
+    affiliation_url: https://www.maynoothuniversity.ie/
+  - name: "Julio Trecenti"
     url: https://github.com/jtrecenti
+    affiliation: Curso-R
+    affiliation_url: http://curso-r.com/
 date: 10-06-2018
 citation_url: "https://r-music.rbind.io/2018-10-06-music21"
 bibliography: refs.bib
@@ -24,9 +28,15 @@ knitr::opts_chunk$set(
 )
 ```
 
-The goal of `music21` is to have an pipe-able API of [music21 python library](http://web.mit.edu/music21/doc/index.html), created by MIT professor Michael Cuthbert. It uses  [`reticulate`](https://github.com/rstudio/reticulate) package in the backend.
+The goal of `music21` is to have an pipe-able API of [music21 python library](http://web.mit.edu/music21/doc/index.html), created by MIT professor Michael Cuthbert. It uses [`reticulate`](https://github.com/rstudio/reticulate) package in the backend.
 
-In practice, `music21` is more limited than the python library. However, it is really easy to run any functions from `music21` inside R.
+According to `music21`'s site, it can be used to answer questions like:
+
+- I wonder how often Bach does that.
+- I wish I knew which band was the first to use these chords in this order.
+- I'll bet we'd know more about Renaissance counterpoint (or Indian ragas or post-tonal pitch structures or the form of minuets) if I could write a program to automatically write more of them.
+
+Actually, `music21` is more limited than the original python library. However, it is really easy to run any functions from `music21` inside R.
 
 ## Installation
 
@@ -148,7 +158,7 @@ note
 plot(note)
 ```
 
-## Example 1
+## Example 1: bach chorales
 
 ### Show bach chorales
 
@@ -180,5 +190,53 @@ In RStudio, you can use the `view` function to see the music inside viewer pane.
 bach_music[[1]]
 ```
 
-# Example 2
+# Example 2: Random chord generator
 
+Last year I made a random chord generator package to study relative pitch perception. My goal was to hear random chords and figure out what was the chord and the inversion. The result was this nice R package made on top of `music21`.
+
+`chordgen` package has just one function. It generates `n` chords and return a `music21` object. There are many options to the list of chords it can generate.
+
+```{r, fig.height=1.8}
+# devtools::install_github("r-music/chordgen")
+library(chordgen)
+
+chordgen(18, n_notes = 3:4, 
+         triad_types = 1:2, 
+         octave = 0, 
+         transpose = 0, 
+         add_lyric = FALSE) %>% 
+  plot()
+```
+
+It is also possible to add lyrics, thanks to the [`chordify`](http://web.mit.edu/music21/doc/usersGuide/usersGuide_09_chordify.html#usersguide-09-chordify) algorithm implemented in `music21`.
+
+```{r, fig.height=1.8}
+chordgen(18, n_notes = 3, 
+         triad_types = 1:2, 
+         octave = 0, 
+         transpose = 0:4, 
+         add_lyric = TRUE) %>% 
+  plot()
+```
+
+We have also created a shiny app to run and play random chords. If `music21` is correctly installed, you can just run:
+
+```{r shiny, eval=FALSE}
+shiny::runGitHub("chordgen", "r-music", subdir="inst/chordgen/")
+```
+
+
+```{r, echo=FALSE}
+knitr::include_graphics("chordgen.png")
+```
+
+
+In a future post, we'll explain how to create and label random chords in detail.
+
+# Contribute
+
+`music21` is just a crawling baby for now. In my opinion, `music21` can be a great tool for i) structured music data IO and ii) music statistical modeling. The biggest challenge for now is think how to make a *tidy* API to it.
+
+What would you like to do with `music21`? Please comment in the comment section.
+
+Thanks!
