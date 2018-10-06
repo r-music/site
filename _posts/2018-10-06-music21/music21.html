@@ -19,370 +19,48 @@
  <!--/radix_placeholder_import_source-->
 
   <!--radix_placeholder_meta_tags-->
-  <title>R-Music</title>
+  <title>music21</title>
   
-  <meta property="description" itemprop="description" content="Music data extraction &amp; analysis in R"/>
+  <meta property="description" itemprop="description" content="A library for computer-aided musicology."/>
   
   
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2018-10-06"/>
+  <meta property="article:created" itemprop="dateCreated" content="2018-10-06"/>
+  <meta name="article:author" content="Bruna Wundervald"/>
+  <meta name="article:author" content="Julio Trecenti"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="R-Music"/>
+  <meta property="og:title" content="music21"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Music data extraction &amp; analysis in R"/>
+  <meta property="og:description" content="A library for computer-aided musicology."/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:site_name" content="R-Music"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="R-Music"/>
-  <meta property="twitter:description" content="Music data extraction &amp; analysis in R"/>
+  <meta property="twitter:title" content="music21"/>
+  <meta property="twitter:description" content="A library for computer-aided musicology."/>
   
+  <!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+  <meta name="citation_title" content="music21"/>
+  <meta name="citation_fulltext_html_url" content="https://r-music.rbind.io/2018-10-06-music21"/>
+  <meta name="citation_online_date" content="2018/10/06"/>
+  <meta name="citation_publication_date" content="2018/10/06"/>
+  <meta name="citation_author" content="Bruna Wundervald"/>
+  <meta name="citation_author" content="Julio Trecenti"/>
   <!--/radix_placeholder_meta_tags-->
+  
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["R-Music"]},{"type":"character","attributes":{},"value":["Music data extraction & analysis in R"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","citation_url","bibliography","output"]}},"value":[{"type":"character","attributes":{},"value":["music21"]},{"type":"character","attributes":{},"value":["A library for computer-aided musicology.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Bruna Wundervald"]},{"type":"character","attributes":{},"value":["https://brunaw.com"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Julio Trecenti"]},{"type":"character","attributes":{},"value":["https://github.com/jtrecenti"]}]}]},{"type":"character","attributes":{},"value":["10-06-2018"]},{"type":"character","attributes":{},"value":["https://r-music.rbind.io/2018-10-06-music21"]},{"type":"character","attributes":{},"value":["refs.bib"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["radix::radix_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
-  <!--radix_placeholder_navigation_in_header-->
   
-  <script type="application/javascript">
-  
-    window.headroom_prevent_pin = false;
-  
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-  
-      // initialize headroom for banner
-      var header = $('header').get(0);
-      var headerHeight = header.offsetHeight;
-      var headroom = new Headroom(header, {
-        onPin : function() {
-          if (window.headroom_prevent_pin) {
-            window.headroom_prevent_pin = false;
-            headroom.unpin();
-          }
-        }
-      });
-      headroom.init();
-      if(window.location.hash)
-        headroom.unpin();
-      $(header).addClass('headroom--transition');
-  
-      // offset scroll location for banner on hash change
-      // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
-      window.addEventListener("hashchange", function(event) {
-        window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
-      });
-  
-      // responsive menu
-      $('.radix-site-header').each(function(i, val) {
-        var topnav = $(this);
-        var toggle = topnav.find('.nav-toggle');
-        toggle.on('click', function() {
-          topnav.toggleClass('responsive');
-        });
-      });
-  
-      // nav dropdowns
-      $('.nav-dropbtn').click(function(e) {
-        $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
-        $(this).parent().siblings('.nav-dropdown')
-           .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $("body").click(function(e){
-        $('.nav-dropdown-content').removeClass('nav-dropdown-active');
-      });
-      $(".nav-dropdown").click(function(e){
-        e.stopPropagation();
-      });
-    });
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["music21_files/bowser-1.9.3/bowser.min.js","music21_files/distill-2.2.21/template.v2.js","music21_files/jquery-1.11.3/jquery.min.js","music21_files/webcomponents-2.0.0/webcomponents.js","README-bach-1.png","README-note-1.png","refs.bib"]}
   </script>
-  
-  <style type="text/css">
-  
-  /* Theme (user-documented overrideables for nav appearance) */
-  
-  .radix-site-nav {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: #455a64;
-    font-size: 15px;
-    font-weight: 300;
-  }
-  
-  .radix-site-nav a {
-    color: inherit;
-    text-decoration: none;
-  }
-  
-  .radix-site-nav a:hover {
-    color: white;
-  }
-  
-  @media print {
-    .radix-site-nav {
-      display: none;
-    }
-  }
-  
-  .radix-site-header {
-  
-  }
-  
-  .radix-site-footer {
-  
-  }
-  
-  
-  /* Site Header */
-  
-  .radix-site-header {
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 3;
-  }
-  
-  .radix-site-header .nav-left {
-    display: inline-block;
-    margin-left: 8px;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .radix-site-header .nav-left {
-      margin-left: 0;
-    }
-  }
-  
-  
-  .radix-site-header .nav-right {
-    float: right;
-    margin-right: 8px;
-  }
-  
-  .radix-site-header a,
-  .radix-site-header .title {
-    display: inline-block;
-    text-align: center;
-    padding: 14px 10px 14px 10px;
-  }
-  
-  .radix-site-header .title {
-    font-size: 18px;
-  }
-  
-  .radix-site-header .logo {
-    padding: 0;
-  }
-  
-  .radix-site-header .logo img {
-    display: none;
-    max-height: 20px;
-    width: auto;
-    margin-bottom: -4px;
-  }
-  
-  .radix-site-header .nav-image img {
-    max-height: 18px;
-    width: auto;
-    display: inline-block;
-    margin-bottom: -3px;
-  }
-  
-  
-  
-  @media screen and (min-width: 1000px) {
-    .radix-site-header .logo img {
-      display: inline-block;
-    }
-    .radix-site-header .nav-left {
-      margin-left: 20px;
-    }
-    .radix-site-header .nav-right {
-      margin-right: 20px;
-    }
-    .radix-site-header .title {
-      padding-left: 12px;
-    }
-  }
-  
-  
-  .radix-site-header .nav-toggle {
-    display: none;
-  }
-  
-  .nav-dropdown {
-    display: inline-block;
-    position: relative;
-  }
-  
-  .nav-dropdown .nav-dropbtn {
-    border: none;
-    outline: none;
-    color: rgba(255, 255, 255, 0.8);
-    padding: 16px 10px;
-    background-color: transparent;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    margin: 0;
-    margin-top: 1px;
-    z-index: 2;
-  }
-  
-  .nav-dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 200px;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 4px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    z-index: 1;
-    margin-top: 2px;
-    white-space: nowrap;
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
-  
-  .nav-dropdown-content hr {
-    margin-top: 4px;
-    margin-bottom: 4px;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav-dropdown-active {
-    display: block;
-  }
-  
-  .nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
-    color: black;
-    padding: 6px 24px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-  }
-  
-  .nav-dropdown-content .nav-dropdown-header {
-    display: block;
-    padding: 5px 24px;
-    padding-bottom: 0;
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #999999;
-    white-space: nowrap;
-  }
-  
-  .nav-dropdown:hover .nav-dropbtn {
-    color: white;
-  }
-  
-  .nav-dropdown-content a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-  .nav-right .nav-dropdown-content {
-    margin-left: -45%;
-    right: 0;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .radix-site-header a, .radix-site-header .nav-dropdown  {display: none;}
-    .radix-site-header a.nav-toggle {
-      float: right;
-      display: block;
-    }
-    .radix-site-header .title {
-      margin-left: 0;
-    }
-    .radix-site-header .nav-right {
-      margin-right: 0;
-    }
-    .radix-site-header {
-      overflow: hidden;
-    }
-    .nav-right .nav-dropdown-content {
-      margin-left: 0;
-    }
-  }
-  
-  
-  @media screen and (max-width: 768px) {
-    .radix-site-header.responsive {position: relative;}
-    .radix-site-header.responsive a.nav-toggle {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-    .radix-site-header.responsive a,
-    .radix-site-header.responsive .nav-dropdown {
-      display: block;
-      text-align: left;
-    }
-    .radix-site-header.responsive .nav-left,
-    .radix-site-header.responsive .nav-right {
-      width: 100%;
-    }
-    .radix-site-header.responsive .nav-dropdown {float: none;}
-    .radix-site-header.responsive .nav-dropdown-content {position: relative;}
-    .radix-site-header.responsive .nav-dropdown .nav-dropbtn {
-      display: block;
-      width: 100%;
-      text-align: left;
-    }
-  }
-  
-  /* Site Footer */
-  
-  .radix-site-footer {
-    width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-    z-index: 3;
-    margin-top: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    text-align: center;
-  }
-  
-  /* Headroom */
-  
-  d-title {
-    padding-top: 6rem;
-  }
-  
-  @media print {
-    d-title {
-      padding-top: 4rem;
-    }
-  }
-  
-  .headroom {
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-  
-  .headroom--transition {
-    transition: all .4s ease-in-out;
-  }
-  
-  .headroom--unpinned {
-    top: -100px;
-  }
-  
-  .headroom--pinned {
-    top: 0;
-  }
-  
-  </style>
-  
-  <link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet"/>
-  <script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-  <script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
-  <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
+  <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
   <!--radix_placeholder_distill-->
   
@@ -1234,50 +912,13 @@
   </script>
   
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-  <script src="site_libs/bowser-1.9.3/bowser.min.js"></script>
-  <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
-  <script src="site_libs/distill-2.2.21/template.v2.js"></script>
+  <script src="music21_files/jquery-1.11.3/jquery.min.js"></script>
+  <script src="music21_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="music21_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="music21_files/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
-  <style type="text/css">
-  .radix-site-nav {
-      color: rgba(255, 255, 255, 0.8);
-      background-color: #990000;
-      font-size: 15px;
-      font-weight: 300;
-  }
-  
-  @media only screen and (max-width: 600px) {
-    d-title{
-      background-image: url('img/logo2.png');
-      background-repeat: no-repeat;
-      background-position: 95% 70%;
-      background-size: initial;
-    }
-  }
-  
-  @media only screen and (min-width: 600px) {
-    d-title{
-      background-image: url('img/logo3.png');
-      background-repeat: no-repeat;
-      background-position: 63% 70%;
-      background-size: initial;
-    }
-  }
-  
-  
-  img {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-  }
-  
-  
-  
-  </style>
   <!--/radix_placeholder_site_in_header-->
 
-  <link rel="stylesheet" href="styles.css" type="text/css"/>
 
 </head>
 
@@ -1286,45 +927,217 @@
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"R-Music","description":"Music data extraction & analysis in R","authors":[]}
+{"title":"music21","description":"A library for computer-aided musicology.","authors":[{"author":"Bruna Wundervald","authorURL":"https://brunaw.com","affiliation":"&nbsp;","affiliationURL":"#"},{"author":"Julio Trecenti","authorURL":"https://github.com/jtrecenti","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2018-10-06T00:00:00.000-03:00","citationText":"Wundervald & Trecenti, 2018"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
 <!--radix_placeholder_navigation_before_body-->
-<header class="header header--fixed" role="banner">
-<nav class="radix-site-nav radix-site-header">
-<div class="nav-left">
-<a href="index.html" class="title">R-Music</a>
-</div>
-<div class="nav-right">
-<a href="index.html">Posts</a>
-<a href="about.html">About</a>
-<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
-</div>
-</nav>
-</header>
 <!--/radix_placeholder_navigation_before_body-->
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>R-Music</h1>
-<p>Music data extraction &amp; analysis in R</p>
+<h1>music21</h1>
+<p>A library for computer-aided musicology.</p>
 </div>
 
+<div class="d-byline">
+  Bruna Wundervald <a href="https://brunaw.com" class="uri">https://brunaw.com</a> 
+  
+,   Julio Trecenti <a href="https://github.com/jtrecenti" class="uri">https://github.com/jtrecenti</a> 
+  
+<br/>10-06-2018
+</div>
 
 <div class="d-article">
-<p>Music information retrieval is a recent study field, with a wide range of topics yet to be explored. It combines computational tools with theory to amplify the utility and applications of music and audio data. These data have many forms of representation, each one carrying different levels of information. Music, for example, can be represented by music sheets, chords, lyrics, MIDI and audio files, and so on.</p>
-<p>This blog has as its main goals to show how to extract and explore these different type of data in R. Some of the packages used here are:</p>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<p>The goal of <code>music21</code> is to have an pipe-able API of <a href="http://web.mit.edu/music21/doc/index.html">music21 python library</a>, created by MIT professor Michael Cuthbert. It uses <a href="https://github.com/rstudio/reticulate"><code>reticulate</code></a> package in the backend.</p>
+<p>In practice, <code>music21</code> is more limited than the python library. However, it is really easy to run any functions from <code>music21</code> inside R.</p>
+<h2 id="installation">Installation</h2>
+<p><code>music21</code> package is based on the <code>music21</code> python library. To install this package, you may want to use <code>reticulate</code>. However, there are some issues:</p>
 <ul>
-<li><a href="https://github.com/r-music/vagalumeR"><code>vagalumeR</code></a></li>
-<li><a href="https://github.com/r-music/chorrrds"><code>chorrrds</code></a></li>
-<li><a href="https://github.com/r-music/music21"><code>music21</code></a></li>
-<li><a href="https://github.com/leonawicz/tabr"><code>tabr</code></a></li>
-<li><a href="https://github.com/tiagomendesdantas/Rspotify"><code>Rspotify</code></a></li>
-<li><a href="https://github.com/cran/seewave"><code>seewave</code></a></li>
+<li><code>music21</code> version 5.3.0 is Python 3 only.</li>
+<li>It is not trivial to make sure that you are using Python 3 on R.</li>
 </ul>
-<p>There are two main maintainers: <a href="https://brunaw.com">Bruna Wundervald</a> and <a href="https://github.com/jtrecenti">Julio Trecenti</a>. Any kind of contribution is highly incentivized, so you can let us know if you would like to be a part of this project or have any suggestions.</p>
+<p>I recommend the workflow as follows.</p>
+<h3 id="install-anaconda">Install Anaconda</h3>
+<p>Anaconda is a platform to install python packages without pain. You can access download and install the <a href="https://www.anaconda.com/download/">latest version here</a>. <strong>Please make sure to install Python 3.x</strong>. If you use Ubuntu, there is a <a href="https://www.digitalocean.com/community/tutorials/how-to-install-the-anaconda-python-distribution-on-ubuntu-16-04">great tutorial from DigitalOcean</a>.</p>
+<h3 id="create-a-conda-environment">Create a conda environment</h3>
+<p>Environments are folders where you install Python packages. Environments are useful because Python usually has many installation paths and it is difficult to have a consistent general configuration. New virtual environments usually come with some basic packages and a new path to a python command line binary.</p>
+<p>Conda environments are Anaconda-optimized environments that install some data science packages automatically.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+reticulate::conda_create(&quot;r-py3&quot;)
+# Upgrade pip to latest version
+reticulate::conda_install(&quot;r-py3&quot;, &quot;pip&quot;)</code></pre>
+</div>
+<h3 id="install-music21-python-package">Install music21 Python package</h3>
+<p>You can install <code>music21</code> using <code>conda_install()</code>:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+reticulate::conda_install(&quot;r-py3&quot;, &quot;music21&quot;, pip = TRUE)</code></pre>
+</div>
+<p>You must use <code>pip=TRUE</code> because <code>music21</code> is not available in the default conda channels.</p>
+<h3 id="install-music21-r-package">Install music21 R package</h3>
+<p><code>music21</code> is not on CRAN as the main functions are very likely to change. You can install <code>music21</code> from github with:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# install.packages(&quot;devtools&quot;)
+devtools::install_github(&quot;jtrecenti/music21&quot;)</code></pre>
+</div>
+<h3 id="make-sure-you-are-using-the-environment-you-just-created">Make sure you are using the environment you just created</h3>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+reticulate::use_condaenv(&quot;r-py3&quot;, required = TRUE)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(music21)
+music21$VERSION</code></pre>
+</div>
+<pre><code>
+[[1]]
+[1] 5
+
+[[2]]
+[1] 3
+
+[[3]]
+[1] 0
+
+[[4]]
+[1] &quot;&quot;</code></pre>
+<p>If your <code>VERSION</code> it is not 5.3.0, you may try to force your python version to</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+reticulate::use_python(&quot;~/anaconda3/envs/r-py3/bin/python&quot;)</code></pre>
+</div>
+<p>so that your <code>py_config()</code> returns</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+reticulate::py_config()</code></pre>
+</div>
+<pre><code>
+python:         /home/jtrecenti/anaconda3/envs/r-py3/bin/python
+libpython:      /home/jtrecenti/anaconda3/envs/r-py3/lib/libpython3.7m.so
+pythonhome:     /home/jtrecenti/anaconda3/envs/r-py3:/home/jtrecenti/anaconda3/envs/r-py3
+version:        3.7.0 (default, Jun 28 2018, 13:15:42)  [GCC 7.2.0]
+numpy:           [NOT FOUND]
+music21:        /home/jtrecenti/anaconda3/envs/r-py3/lib/python3.7/site-packages/music21
+
+NOTE: Python version was forced by use_python function</code></pre>
+<h3 id="extra-install-lilypond">Extra: install lilypond</h3>
+<p>To use the <code>plot</code> and <code>view</code> methods, you’ll also have to install <code>lilypond</code>. On Ubuntu, run:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="bash"><code>
+sudo apt-get install lilypond</code></pre>
+</div>
+<p>If you use Windows or Mac, you can find detailed instructions <a href="http://lilypond.org/download.html">here</a>.</p>
+<h2 id="the-music21-object">The <code>music21</code> object</h2>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(music21)
+library(magrittr)
+music21
+#&gt; Module(music21)</code></pre>
+</div>
+<p><code>music21</code> object stores the python module. It is possible to run any function from it just by using <code>$</code>, treating it as a Reference Class object.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+note &lt;- music21$note$Note(&quot;C#&quot;)
+note</code></pre>
+<p>&lt;music21.note.Note C#&gt;</p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+plot(note)</code></pre>
+<p><img src="README-note-1.png" width="624" /></p>
+</div>
+<h2 id="example-1">Example 1</h2>
+<h3 id="show-bach-chorales">Show bach chorales</h3>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+get_composer(&quot;bach&quot;) %&gt;% 
+  head()
+#&gt; [1] &quot;/home/jtrecenti/anaconda3/envs/r-py3/lib/python3.7/site-packages/music21/corpus/bach/bwv1.6.mxl&quot;  
+#&gt; [2] &quot;/home/jtrecenti/anaconda3/envs/r-py3/lib/python3.7/site-packages/music21/corpus/bach/bwv10.7.mxl&quot; 
+#&gt; [3] &quot;/home/jtrecenti/anaconda3/envs/r-py3/lib/python3.7/site-packages/music21/corpus/bach/bwv101.7.mxl&quot;
+#&gt; [4] &quot;/home/jtrecenti/anaconda3/envs/r-py3/lib/python3.7/site-packages/music21/corpus/bach/bwv102.7.mxl&quot;
+#&gt; [5] &quot;/home/jtrecenti/anaconda3/envs/r-py3/lib/python3.7/site-packages/music21/corpus/bach/bwv103.6.mxl&quot;
+#&gt; [6] &quot;/home/jtrecenti/anaconda3/envs/r-py3/lib/python3.7/site-packages/music21/corpus/bach/bwv104.6.mxl&quot;</code></pre>
+</div>
+<p>Let’s get one of these paths and read:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+bach_music &lt;- get_composer(&quot;bach&quot;)[[61]] %&gt;% 
+  read_music()</code></pre>
+</div>
+<h3 id="plot-bwv165.6-music">Plot bwv165.6 music</h3>
+<p>Now let’s plot the music!</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+plot(bach_music)</code></pre>
+<p><img src="README-bach-1.png" width="576" /></p>
+</div>
+<p>In RStudio, you can use the <code>view</code> function to see the music inside viewer pane.</p>
+<h3 id="print-bwv165.6-music-soprano-part">Print bwv165.6 music (soprano part)</h3>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+bach_music[[1]]
+#&gt; {0.0} &lt;music21.instrument.Instrument P1: Soprano: Instrument 1&gt;
+#&gt; {0.0} &lt;music21.stream.Measure 0 offset=0.0&gt;
+#&gt;     {0.0} &lt;music21.clef.TrebleClef&gt;
+#&gt;     {0.0} &lt;music21.key.Key of G major&gt;
+#&gt;     {0.0} &lt;music21.meter.TimeSignature 4/4&gt;
+#&gt;     {0.0} &lt;music21.note.Note G&gt;
+#&gt; {1.0} &lt;music21.stream.Measure 1 offset=1.0&gt;
+#&gt;     {0.0} &lt;music21.note.Note G&gt;
+#&gt;     {1.0} &lt;music21.note.Note F#&gt;
+#&gt;     {2.0} &lt;music21.note.Note E&gt;
+#&gt;     {2.5} &lt;music21.note.Note F#&gt;
+#&gt;     {3.0} &lt;music21.note.Note G&gt;
+#&gt;     {3.5} &lt;music21.note.Note A&gt;
+#&gt; {5.0} &lt;music21.stream.Measure 2 offset=5.0&gt;
+#&gt;     {0.0} &lt;music21.note.Note B&gt;
+#&gt;     {0.5} &lt;music21.note.Note C&gt;
+#&gt;     {1.0} &lt;music21.note.Note A&gt;
+#&gt;     {2.0} &lt;music21.note.Note G&gt;
+#&gt;     {3.0} &lt;music21.note.Note G&gt;
+#&gt; {9.0} &lt;music21.stream.Measure 3 offset=9.0&gt;
+#&gt;     {0.0} &lt;music21.note.Note G&gt;
+#&gt;     {1.0} &lt;music21.note.Note A&gt;
+#&gt;     {1.5} &lt;music21.note.Note G&gt;
+#&gt;     {2.0} &lt;music21.note.Note F#&gt;
+#&gt;     {2.5} &lt;music21.note.Note E&gt;
+#&gt;     {3.0} &lt;music21.note.Note D&gt;
+#&gt; {13.0} &lt;music21.stream.Measure 4 offset=13.0&gt;
+#&gt;     {0.0} &lt;music21.note.Note G&gt;
+#&gt;     {2.0} &lt;music21.note.Note F#&gt;
+#&gt;     {3.0} &lt;music21.note.Note F#&gt;
+#&gt; {17.0} &lt;music21.stream.Measure 5 offset=17.0&gt;
+#&gt;     {0.0} &lt;music21.layout.SystemLayout&gt;
+#&gt;     {0.0} &lt;music21.note.Note G&gt;
+#&gt;     {1.0} &lt;music21.note.Note G&gt;
+#&gt;     {2.0} &lt;music21.note.Note A&gt;
+#&gt;     {3.0} &lt;music21.note.Note B&gt;
+#&gt; {21.0} &lt;music21.stream.Measure 6 offset=21.0&gt;
+#&gt;     {0.0} &lt;music21.note.Note A&gt;
+#&gt;     {2.0} &lt;music21.note.Note A&gt;
+#&gt;     {3.0} &lt;music21.note.Note B&gt;
+#&gt; {25.0} &lt;music21.stream.Measure 7 offset=25.0&gt;
+#&gt;     {0.0} &lt;music21.note.Note C&gt;
+#&gt;     {1.0} &lt;music21.note.Note B&gt;
+#&gt;     {2.0} &lt;music21.note.Note A&gt;
+#&gt;     {3.0} &lt;music21.note.Note B&gt;
+#&gt;     {3.5} &lt;music21.note.Note C&gt;
+#&gt; {29.0} &lt;music21.stream.Measure 8 offset=29.0&gt;
+#&gt;     {0.0} &lt;music21.note.Note A&gt;
+#&gt;     {2.0} &lt;music21.note.Note G&gt;
+#&gt;     {3.0} &lt;music21.bar.Barline style=final&gt;</code></pre>
+</div>
+<h1 id="example-2">Example 2</h1>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1336,7 +1149,33 @@
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom"></div>
+<div class="appendix-bottom">
+<h3 id="citation">Citation</h3>
+<p>For attribution, please cite this work as</p>
+<pre class="citation-appendix short">Wundervald &amp; Trecenti (2018, Oct. 6). music21. Retrieved from https://r-music.rbind.io/2018-10-06-music21</pre>
+<p>BibTeX citation</p>
+<pre class="citation-appendix long">@misc{wundervald2018music21,
+  author = {Wundervald, Bruna and Trecenti, Julio},
+  title = {music21},
+  url = {https://r-music.rbind.io/2018-10-06-music21},
+  year = {2018}
+}</pre>
+</div>
+<script id="distill-bibliography" type="text/bibtex">
+@article{cuthbert2010music21,
+  title={music21: A toolkit for computer-aided musicology and symbolic music data},
+  author={Cuthbert, Michael Scott and Ariza, Christopher},
+  year={2010},
+  publisher={International Society for Music Information Retrieval}
+}
+
+@Manual{reticulate,
+  title = {reticulate: Interface to 'Python'},
+  author = {JJ Allaire and Kevin Ushey and Yuan Tang},
+  note = {R package version 1.9.0.9003},
+  url = {https://github.com/rstudio/reticulate},
+}
+</script>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
 <!--/radix_placeholder_navigation_after_body-->

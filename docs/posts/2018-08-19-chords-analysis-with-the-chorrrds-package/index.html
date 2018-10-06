@@ -275,12 +275,22 @@
   display: block;
 }
 
-.nav-dropdown-content a {
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
   color: black;
   padding: 6px 24px;
   text-decoration: none;
   display: block;
   text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
 }
 
 .nav-dropdown:hover .nav-dropbtn {
@@ -421,6 +431,10 @@ body {
 
 .l-screen-inset {
   padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
 }
 
 .shaded {
@@ -942,9 +956,9 @@ function init_distill() {
     var fn = $('#' + id);
     var fn_p = $('#' + id + '>p');
     fn_p.find('.footnote-back').remove();
-    var text = fn_p.text();
+    var text = fn_p.html();
     var dtfn = $('<d-footnote></d-footnote>');
-    dtfn.text(text);
+    dtfn.html(text);
     $(this).replaceWith(dtfn);
   });
   // remove footnotes
@@ -970,7 +984,10 @@ function init_distill() {
     var clz = "";
     var language = pre.attr('class');
     if (language) {
-      if ($.inArray(language, ["r", "cpp", "c", "java"]) != -1)
+      // map unknown languages to "clike" (without this they just dissapear)
+      if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                               "javascript", "js", "julia", "lua", "markdown",
+                               "markup", "mathml", "python", "svg", "xml"]) == -1)
         language = "clike";
       language = ' language="' + language + '"';
       var dt_code = $('<d-code block' + language + clz + '></d-code>');
@@ -1185,9 +1202,10 @@ function init_common() {
   // prevent underline for linked images
   $('a > img').parent().css({'border-bottom' : 'none'});
 
-  // mark figures created by knitr chunks as 100% width
+  // mark non-body figures created by knitr chunks as 100% width
   $('.layout-chunk').each(function(i, val) {
-    $(this).find('img, .html-widget').css('width', '100%');
+    var css_prop = $(this).attr('data-layout') !== "l-body" ? 'width' : 'max-width';
+    $(this).find('img, .html-widget').css(css_prop, '100%');
   });
 
   // auto-append index.html to post-preview links in file: protocol
@@ -1199,7 +1217,7 @@ function init_common() {
 
   // get rid of index.html references in header
   if (window.location.protocol !== "file:") {
-    $('.radix-site-header a').each(function(i,val) {
+    $('.radix-site-header a[href]').each(function(i,val) {
       $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
     });
   }
@@ -1219,6 +1237,7 @@ function init_common() {
     $('#disqus_thread').toggleClass('hidden');
     if (!$('#disqus_thread').hasClass('hidden')) {
       var offset = $(this).offset();
+      $(window).resize();
       $('html, body').animate({
         scrollTop: offset.top - 35
       });
@@ -1293,7 +1312,7 @@ img {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Introduction to the chorrrds package","description":"Music chords analysis!","authors":[{"author":"Bruna Wundervald","authorURL":"https://brunaw.com","affiliation":"Maynooth University","affiliationURL":"https://www.maynoothuniversity.ie/"},{"author":"Julio Trecenti","authorURL":"https://github.com/jtrecenti","affiliation":"Curso-R","affiliationURL":"http://curso-r.com/"}],"publishedDate":"2018-08-19T00:00:00.000+01:00","citationText":"Wundervald & Trecenti, 2018"}
+{"title":"Introduction to the chorrrds package","description":"Music chords analysis!","authors":[{"author":"Bruna Wundervald","authorURL":"https://brunaw.com","affiliation":"Maynooth University","affiliationURL":"https://www.maynoothuniversity.ie/"},{"author":"Julio Trecenti","authorURL":"https://github.com/jtrecenti","affiliation":"Curso-R","affiliationURL":"http://curso-r.com/"}],"publishedDate":"2018-08-19T00:00:00.000-03:00","citationText":"Wundervald & Trecenti, 2018"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
