@@ -16,7 +16,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.align = 'center', cache = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center', cache = FALSE)
 ```
 
 
@@ -24,9 +24,9 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = 'center', cache = TRUE)
 # Intro
 
 Hey people! Today we are going to talk a little bit about my 
-package `vagalumeR` and what we can do with it. 
+package [`vagalumeR`](https://github.com/r-music/vagalumeR) and what we can do with it. 
 
-The `vagalumeR` package provides us with access to the [Vagalume](https://www.vagalume.com.br/)
+The [`vagalumeR`](https://github.com/r-music/vagalumeR)  package provides us with access to the [Vagalume](https://www.vagalume.com.br/)
 website API. [Vagalume](https://www.vagalume.com.br/) is a music 
 portal, and its API gives us information about discographies, 
 music names, related artists, and the most important one, **music lyrics**.
@@ -93,11 +93,23 @@ The `vagalumeR` package has 6 main functions:
 For today's post, we will be working with the band called 
 [Belle and Sebastian](https://belleandsebastian.com/). I personally like
 the band style and their lyrics, which can be taken as very poetic 
-sometimes. 
+sometimes. The installation of the package is done with: 
+
+```{r, eval = FALSE}
+# install it either from 
+# CRAN
+install.packages('vagalumeR')
+# or github
+devtools::install_github("r-music/vagalumeR")
+# checking the help of the package
+help(package = "vagalumeR")
+```
+
 
 The lyrics obtention process needs two things: an artist, for who
 we will first get the name of the songs, and the song ids. The code 
 is as follows:
+
 
 ```{r}
 library(tidyverse) # always
@@ -202,10 +214,10 @@ $$D_{cos} = 1 - \frac{\mathbf{x}'\mathbf{y}}{\sqrt{(\mathbf{x}'\mathbf{x})
 knitr::include_graphics("img/cosine.png")
 ```
 
-As we are not going go through the details of the method, let us link this
+As we are not going go to go through the details of the method, let us link this
 [video here](https://www.youtube.com/watch?v=7cwBhWYHgsA) that 
 specifies it better. We now use the distance measure to obtain a 
-few clusters for the songs. In the plot above, the songs that appear
+few clusters for the songs. In the plot below, the songs that appear
 in the same circle are the similar ones, thereby forming a cluster:  
 
 
@@ -223,8 +235,8 @@ dtm <- DocumentTermMatrix(cps)
 dists <- proxy::dist(as.matrix(dtm), method = 'cosine')
 clusters <- hclust(dists) 
 
-# choosing by keep only 15 clusters 
-classes <-  data.frame(class = cutree(clusters, k = 15), 
+# choosing by keep only 20 clusters 
+classes <-  data.frame(class = cutree(clusters, k = 20), 
                        name = lyrics_data$song) %>% 
   group_by(class) %>% 
   summarise(n = n(), label = paste(name, collapse = ",\n"))
