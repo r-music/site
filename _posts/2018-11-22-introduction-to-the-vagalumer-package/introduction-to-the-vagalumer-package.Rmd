@@ -1,7 +1,7 @@
 ---
 title: "Introduction to the vagalumeR package"
 description: |
-  A short description of the post.
+  A package to extract music lyrics!
 author:
   - name: "Bruna Wundervald"
     url: https://brunaw.com
@@ -74,8 +74,8 @@ stored in an object, ready to be used when needed:
 key <- "your-api-key"
 ```
 
-```{r}
-key <- "3f4f4a35789cae8ce84b5579069db511"
+```{r, echo = FALSE}
+key <- readRDS("key.rds")
 ```
 
 The `vagalumeR` package has 6 main functions:
@@ -256,5 +256,4 @@ In this blog post, we:
   other information from the from the [Vagalume](https://www.vagalume.com.br/) 
   API. 
   - we used Belle & Sebastian as an example of how the extraction is done.
-  - we presented a brief analysis of the music lyrics, along with a 
-  similarity.
+  - we presented a brief analysis of the music lyrics, along with a hierarchical clustering technique using cosine dissimilarity to measure distances between lyrics.
