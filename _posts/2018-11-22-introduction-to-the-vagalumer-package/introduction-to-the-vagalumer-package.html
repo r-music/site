@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="radix" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Introduction to the vagalumeR package</title>
+  
+  <meta property="description" itemprop="description" content="A short description of the post."/>
+  
+  
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2018-11-22"/>
+  <meta property="article:created" itemprop="dateCreated" content="2018-11-22"/>
+  <meta name="article:author" content="Bruna Wundervald"/>
+  
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Introduction to the vagalumeR package"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="A short description of the post."/>
+  <meta property="og:locale" content="en_US"/>
+  
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Introduction to the vagalumeR package"/>
+  <meta property="twitter:description" content="A short description of the post."/>
+  
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","editor_options"]}},"value":[{"type":"character","attributes":{},"value":["Introduction to the vagalumeR package"]},{"type":"character","attributes":{},"value":["A short description of the post.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Bruna Wundervald"]},{"type":"character","attributes":{},"value":["https://brunaw.com"]},{"type":"character","attributes":{},"value":["Maynooth University"]},{"type":"character","attributes":{},"value":["https://www.maynoothuniversity.ie/"]}]}]},{"type":"character","attributes":{},"value":["11-22-2018"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["radix::radix_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["chunk_output_type"]}},"value":[{"type":"character","attributes":{},"value":["console"]}]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["img/cosine.png","img/cred.png","img/login.png","introduction-to-the-vagalumer-package_files/bowser-1.9.3/bowser.min.js","introduction-to-the-vagalumer-package_files/crosstalk-1.0.0/css/crosstalk.css","introduction-to-the-vagalumer-package_files/crosstalk-1.0.0/js/crosstalk.js","introduction-to-the-vagalumer-package_files/crosstalk-1.0.0/js/crosstalk.js.map","introduction-to-the-vagalumer-package_files/crosstalk-1.0.0/js/crosstalk.min.js","introduction-to-the-vagalumer-package_files/crosstalk-1.0.0/js/crosstalk.min.js.map","introduction-to-the-vagalumer-package_files/distill-2.2.21/template.v2.js","introduction-to-the-vagalumer-package_files/figure-html5/unnamed-chunk-6-1.png","introduction-to-the-vagalumer-package_files/figure-html5/unnamed-chunk-7-1.png","introduction-to-the-vagalumer-package_files/htmlwidgets-1.3/htmlwidgets.js","introduction-to-the-vagalumer-package_files/jquery-1.11.3/jquery-AUTHORS.txt","introduction-to-the-vagalumer-package_files/jquery-1.11.3/jquery.js","introduction-to-the-vagalumer-package_files/jquery-1.11.3/jquery.min.js","introduction-to-the-vagalumer-package_files/jquery-1.11.3/jquery.min.map","introduction-to-the-vagalumer-package_files/plotly-binding-4.8.0/plotly.js","introduction-to-the-vagalumer-package_files/plotly-htmlwidgets-css-1.39.2/plotly-htmlwidgets.css","introduction-to-the-vagalumer-package_files/plotly-main-1.39.2/plotly-latest.min.js","introduction-to-the-vagalumer-package_files/typedarray-0.1/typedarray.min.js","introduction-to-the-vagalumer-package_files/webcomponents-2.0.0/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+  
+  <style type="text/css">
+  
+  body {
+    background-color: white;
+  }
+  
+  .pandoc-table {
+    width: 100%;
+  }
+  
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+  
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+  
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+  
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+  
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+  
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+  
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .shaded .shaded-content {
+    background: white;
+  }
+  
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  d-article {
+    padding-bottom: 30px;
+  }
+  
+  d-appendix {
+    padding-top: 30px;
+  }
+  
+  d-article>p>img {
+    width: 100%;
+  }
+  
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+  
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  /* CSS for table of contents */
+  
+  .d-toc {
+    color: rgba(0,0,0,0.8);
+    font-size: 0.8em;
+    line-height: 1em;
+  }
+  
+  .d-toc-header {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 1.3em;
+  }
+  
+  .d-toc a {
+    border-bottom: none;
+  }
+  
+  .d-toc ul {
+    padding-left: 0;
+  }
+  
+  .d-toc li>ul {
+    padding-top: 0.8em;
+    padding-left: 16px;
+    margin-bottom: 0.6em;
+  }
+  
+  .d-toc ul,
+  .d-toc li {
+    list-style-type: none;
+  }
+  
+  .d-toc li {
+    margin-bottom: 0.9em;
+  }
+  
+  .d-toc-separator {
+    margin-top: 20px;
+    margin-bottom: 2em;
+  }
+  
+  .d-article-with-toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  
+  
+  
+  /* Tweak code blocks (note that this CSS is repeated above in an injection
+     into the d-code shadow dom) */
+  
+  pre.d-code code.d-code {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+  
+  pre.text-output {
+  
+    font-size: 12px;
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  @media(min-width: 768px) {
+  pre.d-code code.d-code  {
+      padding-left: 18px;
+      font-size: 14px;
+  }
+  pre.text-output {
+    font-size: 14px;
+  }
+  }
+  
+  /* Figure */
+  
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+  
+  .figure img {
+    width: 100%;
+  }
+  
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+  
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+  
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+  
+  
+  
+  /* Tweak 1000px media break to show more text */
+  
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+  
+    .grid {
+      grid-column-gap: 16px;
+    }
+  
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+  
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+  
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+  
+  
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+  
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  
+  /* Social footer */
+  
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+  
+  .disqus-comments {
+    margin-right: 30px;
+  }
+  
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+  
+  #disqus_thread {
+    margin-top: 30px;
+  }
+  
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+  
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+  
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+  
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+  
+  
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+  
+  
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+  
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+  
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+  
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+  
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  
+  
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+  
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+  
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+  
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+  
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+  
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  
+  </style>
+  
+  <script type="application/javascript">
+  
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+  
+  // show body when load is complete
+  function on_load_complete() {
+  
+    // set body to visible
+    document.body.style.visibility = 'visible';
+  
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+  
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+  
+  function init_distill() {
+  
+    init_common();
+  
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+  
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+  
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+  
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+  
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+  
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+  
+    // create d-bibliography
+    var bibliography = $('<d-bibliography></d-bibliography>');
+    $('#distill-bibliography').wrap(bibliography);
+  
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+  
+    // replace citations with <d-cite>
+    $('.citation').each(function(i, val) {
+      appendix = true;
+      var cites = $(this).attr('data-cites').split(" ");
+      var dt_cite = $('<d-cite></d-cite>');
+      dt_cite.attr('key', cites.join());
+      $(this).replaceWith(dt_cite);
+    });
+    // remove refs
+    $('#refs').remove();
+  
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+  
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-toc a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+  
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+  
+    // replace code blocks with d-code
+    $('pre>code').each(function(i, val) {
+      var code = $(this);
+      var pre = code.parent();
+      var clz = "";
+      var language = pre.attr('class');
+      if (language) {
+        // map unknown languages to "clike" (without this they just dissapear)
+        if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                                 "javascript", "js", "julia", "lua", "markdown",
+                                 "markup", "mathml", "python", "svg", "xml"]) == -1)
+          language = "clike";
+        language = ' language="' + language + '"';
+        var dt_code = $('<d-code block' + language + clz + '></d-code>');
+        dt_code.text(code.text());
+        pre.replaceWith(dt_code);
+      } else {
+        code.addClass('text-output').unwrap().changeElementType('pre');
+      }
+    });
+  
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+  
+      // capture layout
+      var layout = $(this).attr('data-layout');
+  
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('d-code, pre.text-output, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+  
+  
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+  
+    // load distill framework
+    load_distill_framework();
+  
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+  
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+  
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+  
+      // table of contents
+      if (have_authors) // adjust border if we are in authors
+        $('.d-toc').parent().addClass('d-article-with-toc');
+  
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+  
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+  
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+  
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+  
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+  
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+  
+      // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+      $('d-code').each(function(i, val) {
+        var style = document.createElement('style');
+        style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                          '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+        if (this.shadowRoot)
+          this.shadowRoot.appendChild(style);
+      });
+  
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+  
+      // clear polling timer
+      clearInterval(tid);
+  
+      // show body now that everything is ready
+      on_load_complete();
+    }
+  
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+  
+  }
+  
+  function init_downlevel() {
+  
+    init_common();
+  
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+  
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+  
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+  
+    // remove toc
+    $('.d-toc-header').remove();
+    $('.d-toc').remove();
+    $('.d-toc-separator').remove();
+  
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+  
+  
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+  
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+  
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+  
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+  
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+  
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+  
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+  
+    $('body').addClass('downlevel');
+  
+    on_load_complete();
+  }
+  
+  
+  function init_common() {
+  
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+  
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+  
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+  
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+  
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+  
+      }
+    });
+  
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+  
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.radix-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+  
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+  
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+  
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+  
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+  
+  </script>
+  
+  <!--/radix_placeholder_distill-->
+  <script src="introduction-to-the-vagalumer-package_files/htmlwidgets-1.3/htmlwidgets.js"></script>
+  <script src="introduction-to-the-vagalumer-package_files/plotly-binding-4.8.0/plotly.js"></script>
+  <script src="introduction-to-the-vagalumer-package_files/typedarray-0.1/typedarray.min.js"></script>
+  <script src="introduction-to-the-vagalumer-package_files/jquery-1.11.3/jquery.min.js"></script>
+  <link href="introduction-to-the-vagalumer-package_files/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+  <script src="introduction-to-the-vagalumer-package_files/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+  <link href="introduction-to-the-vagalumer-package_files/plotly-htmlwidgets-css-1.39.2/plotly-htmlwidgets.css" rel="stylesheet" />
+  <script src="introduction-to-the-vagalumer-package_files/plotly-main-1.39.2/plotly-latest.min.js"></script>
+  <script src="introduction-to-the-vagalumer-package_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="introduction-to-the-vagalumer-package_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="introduction-to-the-vagalumer-package_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Introduction to the vagalumeR package","description":"A short description of the post.","authors":[{"author":"Bruna Wundervald","authorURL":"https://brunaw.com","affiliation":"Maynooth University","affiliationURL":"https://www.maynoothuniversity.ie/"}],"publishedDate":"2018-11-22T00:00:00.000+00:00","citationText":"Wundervald, 2018"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Introduction to the vagalumeR package</h1>
+<p>A short description of the post.</p>
+</div>
+
+<div class="d-byline">
+  Bruna Wundervald <a href="https://brunaw.com" class="uri">https://brunaw.com</a> (Maynooth University)<a href="https://www.maynoothuniversity.ie/" class="uri">https://www.maynoothuniversity.ie/</a>
+  
+<br/>11-22-2018
+</div>
+
+<div class="d-article">
+<h1 id="intro">Intro</h1>
+<p>Hey people! Today we are going to talk a little bit about my package <code>vagalumeR</code> and what we can do with it.</p>
+<p>The <code>vagalumeR</code> package provides us with access to the <a href="https://www.vagalume.com.br/">Vagalume</a> website API. <a href="https://www.vagalume.com.br/">Vagalume</a> is a music portal, and its API gives us information about discographies, music names, related artists, and the most important one, <strong>music lyrics</strong>. Cool!</p>
+<p>The first version of the package goes back to 2017 when I was taking a Text Mining course. For the course assignments, we were asked to deliver some interesting analysis using text and the techniques we learned. As by that time I did not found anything related to music lyrics datasets, I made the package to solve this problem :)</p>
+<h1 id="how-to-get-the-api">How to get the API</h1>
+<p>We are going to start by explaining how to get the <em>API key</em> . You will need to be aware that <a href="https://www.vagalume.com.br/">Vagalume</a> is a <strong>Brazilian</strong> website, so everything there will be in Portuguese. The following explains how to go through that barrier and successfully get the key.</p>
+<ol type="1">
+<li>Access <a href="https://auth.vagalume.com.br/" class="uri">https://auth.vagalume.com.br/</a> and log in (it can be done with some social media account in the “Entre com” buttons):</li>
+</ol>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/login.png" width="925" style="display: block; margin: auto;" /></p>
+</div>
+<ol start="2" type="1">
+<li>Go to <a href="https://auth.vagalume.com.br/settings/api/" class="uri">https://auth.vagalume.com.br/settings/api/</a> and create an application:</li>
+</ol>
+<ul>
+<li>Click on the “Adicionar Credencial” button and fill the name (“Nome da aplicação”) and its purpose (“Descrição da aplicação”). Click “Cadastrar” to create it!</li>
+</ul>
+<ol start="3" type="1">
+<li>Now you must have an API key available for use. In <a href="https://auth.vagalume.com.br/settings/api/" class="uri">https://auth.vagalume.com.br/settings/api/</a>, copy your key from the “Credencial” section:</li>
+</ol>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/cred.png" width="1089" style="display: block; margin: auto;" /></p>
+</div>
+<p>And there you have it. Now it is just a matter of having your key stored in an object, ready to be used when needed:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+key &lt;- &quot;your-api-key&quot;</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+key &lt;- &quot;3f4f4a35789cae8ce84b5579069db511&quot;</code></pre>
+</div>
+<p>The <code>vagalumeR</code> package has 6 main functions:</p>
+<ul>
+<li><code>artistInfo()</code>: brings us information about an specific artist.</li>
+<li><code>discography()</code>: gives us the discography of an artist.</li>
+<li><code>relatedInfo()</code>: brings us information about related artists of one specific musician/band.</li>
+<li><code>songNames()</code>: gives us the names for the songs of an artist.</li>
+<li><code>topLyrics()</code>: tells us about the top acessed lyrics of an artist.</li>
+<li><code>lyrics()</code>: brings the full lyrics and translation (when available) of the songs!</li>
+</ul>
+<p>For today’s post, we will be working with the band called <a href="https://belleandsebastian.com/">Belle and Sebastian</a>. I personally like the band style and their lyrics, which can be taken as very poetic sometimes.</p>
+<p>The lyrics obtention process needs two things: an artist, for who we will first get the name of the songs, and the song ids. The code is as follows:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(tidyverse) # always
+library(vagalumeR) # loading the package!
+
+# defining the artist 
+artist &lt;- &quot;belle-sebastian&quot;
+
+# song names retrieval
+song &lt;- songNames(artist)
+
+# mapping the lyrics function over the ids found
+lyrics_data &lt;- song %&gt;% 
+  pull(song.id) %&gt;% 
+  purrr::map(lyrics, 
+             artist = artist,
+             type = &quot;id&quot;, 
+             key = key) %&gt;%
+  purrr::map_df(data.frame) %&gt;% 
+  slice(-15) # There is a repeated lyric there!
+
+glimpse(lyrics_data) </code></pre>
+<pre><code>
+Observations: 58
+Variables: 7
+$ id       &lt;fct&gt; 3ade68b5gae98eda3, 3ade68b5gae98eda3, 3ade68b5ga...
+$ name     &lt;fct&gt; Belle &amp; Sebastian, Belle &amp; Sebastian, Belle &amp; Se...
+$ song.id  &lt;chr&gt; &quot;3ade68b7gd0f06ea3&quot;, &quot;3ade68b7g61944ea3&quot;, &quot;3ade6...
+$ song     &lt;chr&gt; &quot;(I Believe In) Travellin&#39; Light&quot;, &quot;(My Girl&#39;s G...
+$ language &lt;int&gt; 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, ...
+$ text     &lt;chr&gt; &quot;Shimmering travellin&#39; light, echoing love at fi...
+$ tr.text  &lt;chr&gt; &quot;[ (I Believe In) Travellin &#39;luz] Brilhando a lu...</code></pre>
+</div>
+<p>Now we have our artists id and name, the songs name and id, their language (2 for English and 1 for Portuguese!), the original lyrics and the translation, when available. We can analyze term frequency in the songs, for example:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(tidytext)
+
+unnested &lt;- lyrics_data %&gt;% 
+  unnest_tokens(word, text) %&gt;% 
+  dplyr::anti_join(stop_words, by = c(&quot;word&quot; = &quot;word&quot;))
+
+unnested %&gt;% 
+  count(word) %&gt;% 
+  filter(n &lt; quantile(n, 0.999)) %&gt;% 
+  top_n(n = 30) %&gt;% 
+  ggplot(aes(reorder(word, n), n)) +
+  geom_linerange(aes(ymin = min(n), ymax = n, x = reorder(word, n)),
+                     position = position_dodge(width = 0.2), size = 1, 
+                 colour = &#39;wheat1&#39;) + 
+  geom_point(colour = &#39;salmon1&#39;, size = 3, alpha = 0.7) +
+  coord_flip() +
+  labs(x = &#39;Top 30 most common words&#39;, y = &#39;Counts&#39;) +
+  theme_bw()</code></pre>
+<p><img src="introduction-to-the-vagalumer-package_files/figure-html5/unnamed-chunk-6-1.png" width="432" style="display: block; margin: auto;" /></p>
+</div>
+<p>So those are the top 30 most common words in Belle &amp; Sebastian songs. Here we need to remember that lyrics actually have a lot of repetition, so this needs to be taken into consideration when evaluating word or phrases frequencies. One alternative could be looking at the 2-grams instead of only the words:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+lyrics_data %&gt;% 
+  unnest_tokens(bigram, text, token = &quot;ngrams&quot;, n = 2) %&gt;%
+  separate(bigram, c(&quot;word1&quot;, &quot;word2&quot;), sep = &quot; &quot;) %&gt;%
+  filter(!word1 %in% stop_words$word,
+         !is.na(word1), !is.na(word2),
+         !word2 %in% stop_words$word) %&gt;%
+  count(word1, word2, sort = TRUE) %&gt;% 
+  mutate(word = paste(word1, word2)) %&gt;% 
+  filter(n &lt; quantile(n, 0.999)) %&gt;% 
+  arrange(desc(n)) %&gt;% 
+  slice(1:30) %&gt;%  
+  ggplot(aes(reorder(word, n), n)) +
+  geom_linerange(aes(ymin = min(n), ymax = n, x = reorder(word, n)),
+                 position = position_dodge(width = 0.2), size = 1, 
+                 colour = &#39;wheat1&#39;) + 
+  geom_point(colour = &#39;salmon1&#39;, size = 3, alpha = 0.7) +
+  coord_flip() +
+  labs(x = &#39;Top 30 most common 2-grams&#39;, y = &#39;Counts&#39;) +
+  theme_bw()</code></pre>
+<p><img src="introduction-to-the-vagalumer-package_files/figure-html5/unnamed-chunk-7-1.png" width="432" style="display: block; margin: auto;" /></p>
+</div>
+<p>Here we have very different results, with even some Portuguese 2-grams - which was not intentional :)</p>
+<h1 id="similarity-analysis">Similarity analysis</h1>
+<p>Now we are going to do a simple similarity analysis. This kind of analysis is interesting because it allows us to clusters the lyrics of the songs, creating groups that are similar within then. Similarity analysis is very usual in recommendation systems, in the sense that it is possible to recommend songs (or anything else) based on high similarity values.</p>
+<p>The measure of similarity between each song considered here will be the <code>cosine distance</code>. This distance is based on the angle <span class="math inline">\(\theta\)</span> formed by two vectors in space. The <span class="math inline">\(cos(\theta)\)</span> is equivalent to the similarity between them and, with that, <span class="math inline">\(1 - cos(\theta)\)</span> is their distance:</p>
+<p><span class="math display">\[D_{cos} = 1 - \frac{\mathbf{x}&#39;\mathbf{y}}{\sqrt{(\mathbf{x}&#39;\mathbf{x})
+(\mathbf{y}&#39;\mathbf{y})}} \]</span></p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="img/cosine.png" width="595" style="display: block; margin: auto;" /></p>
+</div>
+<p>As we are not going go through the details of the method, let us link this <a href="https://www.youtube.com/watch?v=7cwBhWYHgsA">video here</a> that specifies it better. We now use the distance measure to obtain a few clusters for the songs. In the plot above, the songs that appear in the same circle are the similar ones, thereby forming a cluster:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(tm)
+library(packcircles)
+library(viridis)
+
+# creating the corpus and the document-term matrix 
+cps &lt;- VCorpus(VectorSource(lyrics_data$text),
+                            readerControl = list(language = &quot;en&quot;))
+dtm &lt;- DocumentTermMatrix(cps)
+
+# finding the distances and the clusters
+dists &lt;- proxy::dist(as.matrix(dtm), method = &#39;cosine&#39;)
+clusters &lt;- hclust(dists) 
+
+# choosing by keep only 15 clusters 
+classes &lt;-  data.frame(class = cutree(clusters, k = 15), 
+                       name = lyrics_data$song) %&gt;% 
+  group_by(class) %&gt;% 
+  summarise(n = n(), label = paste(name, collapse = &quot;,\n&quot;))
+
+packing &lt;- circleProgressiveLayout(classes$n, sizetype=&#39;area&#39;) %&gt;% 
+  bind_cols(classes)
+circles &lt;- circleLayoutVertices(packing, npoints=15)
+
+
+# creating a circle plot to indicate which song is similar to which
+p &lt;- ggplot() + 
+  geom_polygon(data = circles, aes(x, y, group = id, fill = as.factor(id)), 
+               colour = &quot;grey&quot;, alpha = 0.5) +
+  geom_text(data = packing, aes(x = x, y = y, label = label, size = n)) +
+  scale_size_continuous(range = c(1,3)) +
+  scale_fill_manual(values = inferno(nrow(packing))) +
+  theme_void() + 
+  theme(legend.position = &quot;none&quot;) +
+  coord_equal() 
+
+plotly::ggplotly(p)</code></pre>
+<div id="htmlwidget-5c08460300ef5372f8d7" style="width:624px;height:652.8px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5c08460300ef5372f8d7">{"x":{"data":[{"x":[0,-0.0487767522484329,-0.186673065407094,-0.389845414182175,-0.62316345370762,-0.846284375321634,-1.02062854468722,-1.116050271054,-1.116050271054,-1.02062854468722,-0.846284375321635,-0.623163453707621,-0.389845414182175,-0.186673065407095,-0.048776752248433,0,0],"y":[0,0.229476577270548,0.419274569601761,0.536576179858943,0.561098893976951,0.48860251190292,0.331622316706403,0.117301610257182,-0.117301610257181,-0.331622316706403,-0.48860251190292,-0.561098893976951,-0.536576179858943,-0.419274569601761,-0.229476577270549,-1.38186593520808e-16,0],"text":"id: 1<br />as.factor(id): 1","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(0,0,4,0.5)","hoveron":"fills","name":"1","legendgroup":"1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[3.38513750128654,3.23880724454124,2.82511830506525,2.21560125874001,1.51564714016368,0.846284375321635,0.323251867224892,0.0369866881245406,0.0369866881245404,0.323251867224892,0.846284375321634,1.51564714016367,2.21560125874001,2.82511830506525,3.23880724454124,3.38513750128654,3.38513750128654],"y":[0,0.688429731811644,1.25782370880528,1.60972853957683,1.68329668193085,1.46580753570876,0.99486695011921,0.351904830771545,-0.351904830771544,-0.99486695011921,-1.46580753570876,-1.68329668193085,-1.60972853957683,-1.25782370880528,-0.688429731811646,-4.14559780562423e-16,0],"text":"id: 2<br />as.factor(id): 2","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(13,8,42,0.5)","hoveron":"fills","name":"2","legendgroup":"2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.797884560802865,0.659923071686373,0.26989339914592,-0.304764783127913,-0.964687854814286,-1.59576912160573,-2.08888889928068,-2.3587822984266,-2.3587822984266,-2.08888889928068,-1.59576912160573,-0.964687854814287,-0.304764783127913,0.269893399145919,0.659923071686372,0.797884560802865,0.797884560802865],"y":[-2.14727927051282,-1.49822149486689,-0.961391705134914,-0.629612648907095,-0.560251939123323,-0.765302672627477,-1.20930971476926,-1.815500214285,-2.47905832674064,-3.08524882625638,-3.52925586839816,-3.73430660190231,-3.66494589211854,-3.33316683589072,-2.79633704615875,-2.14727927051282,-2.14727927051282],"text":"id: 3<br />as.factor(id): 3","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(40,11,84,0.5)","hoveron":"fills","name":"3","legendgroup":"3","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-1.02774964681272,-1.21025554216591,-1.72621630090491,-2.4864176204874,-3.3594137865454,-4.19425583104628,-4.84659198019398,-5.20362738751297,-5.20362738751298,-4.84659198019398,-4.19425583104628,-3.3594137865454,-2.4864176204874,-1.72621630090491,-1.21025554216591,-1.02774964681272,-1.02774964681272],"y":[0.726829153459605,1.58545188389555,2.2956109438965,2.73451338039576,2.82626897481915,2.55501235131747,1.96764624438321,1.16573158995887,0.287926716960345,-0.513987937463996,-1.10135404439826,-1.37261066789994,-1.28085507347655,-0.84195263697729,-0.131793576976344,0.726829153459605,0.726829153459605],"text":"id: 4<br />as.factor(id): 4","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(72,11,106,0.5)","hoveron":"fills","name":"4","legendgroup":"4","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.0706564834437542,0.0218797311953213,-0.11601658196334,-0.319188930738421,-0.552506970263866,-0.77562789187788,-0.949972061243461,-1.04539378761024,-1.04539378761024,-0.949972061243461,-0.775627891877881,-0.552506970263867,-0.319188930738421,-0.11601658196334,0.0218797311953212,0.0706564834437542,0.0706564834437542],"y":[1.12616482189888,1.35564139916942,1.54543939150064,1.66274100175782,1.68726371587583,1.6147673338018,1.45778713860528,1.24346643215606,1.00886321164169,0.794542505192472,0.637562309995955,0.565065927921924,0.589588642039933,0.706890252297114,0.896688244628327,1.12616482189887,1.12616482189888],"text":"id: 5<br />as.factor(id): 5","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(101,21,110,0.5)","hoveron":"fills","name":"5","legendgroup":"5","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.946582075054384,0.897805322805951,0.759909009647289,0.556736660872208,0.323418621346763,0.100297699732749,-0.0740464696328315,-0.169468195999615,-0.169468195999615,-0.0740464696328316,0.100297699732749,0.323418621346763,0.556736660872208,0.759909009647289,0.897805322805951,0.946582075054384,0.946582075054384],"y":[1.83749730583078,2.06697388310133,2.25677187543254,2.37407348568972,2.39859619980773,2.3260998177337,2.16911962253718,1.95479891608796,1.7201956955736,1.50587498912437,1.34889479392786,1.27639841185383,1.30092112597183,1.41822273622902,1.60802072856023,1.83749730583078,1.83749730583078],"text":"id: 6<br />as.factor(id): 6","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(130,32,108,0.5)","hoveron":"fills","name":"6","legendgroup":"6","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.0202895218629582,-0.0892702664212043,-0.284285102691431,-0.571614193828347,-0.901575729671534,-1.21711636306726,-1.46367625190473,-1.59862295147769,-1.59862295147769,-1.46367625190473,-1.21711636306726,-0.901575729671534,-0.571614193828347,-0.284285102691431,-0.0892702664212046,-0.0202895218629582,-0.0202895218629582],"y":[2.48083693284617,2.80536582066913,3.07378071553512,3.23967024364903,3.27435059854092,3.17182523178884,2.94982171071795,2.64672646096008,2.31494740473226,2.01185215497439,1.7898486339035,1.68732326715142,1.72200362204331,1.88789315015722,2.1563080450232,2.48083693284617,2.48083693284617],"text":"id: 7<br />as.factor(id): 7","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(159,42,99,0.5)","hoveron":"fills","name":"7","legendgroup":"7","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[3.43752563565242,3.30847447944166,2.94363512811116,2.40609161996742,1.78879011099795,1.19846764011173,0.737196325436279,0.484734167797314,0.484734167797314,0.737196325436279,1.19846764011173,1.78879011099795,2.40609161996741,2.94363512811116,3.30847447944166,3.43752563565242,3.43752563565242],"y":[3.17527008682592,3.78240804199809,4.28456632904582,4.59491721817375,4.65979822120233,4.46799082328252,4.05266026603016,3.48562097595384,2.86491919769799,2.29787990762168,1.88254935036932,1.69074195244951,1.75562295547809,2.06597384460602,2.56813213165375,3.17527008682592,3.17527008682592],"text":"id: 8<br />as.factor(id): 8","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(187,55,84,0.5)","hoveron":"fills","name":"8","legendgroup":"8","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[5.4508925273136,5.34182439356444,5.03347886349507,4.57917168048569,4.05745668372981,3.55854313579848,3.1686977216163,2.95532825492979,2.95532825492979,3.1686977216163,3.55854313579848,4.05745668372981,4.57917168048569,5.03347886349507,5.34182439356444,5.4508925273136,5.4508925273136],"y":[1.57896028292994,2.09208550895087,2.51648672179645,2.77878109620169,2.83361555196235,2.67150871352202,2.32049032594142,1.84125465733519,1.3166659085247,0.837430239918459,0.486411852337862,0.32430501389753,0.379139469658191,0.641433844063435,1.06583505690901,1.57896028292994,1.57896028292994],"text":"id: 9<br />as.factor(id): 9","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(212,72,66,0.5)","hoveron":"fills","name":"9","legendgroup":"9","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[4.50183072589143,4.453053973643,4.31515766048434,4.11198531170926,3.87866727218381,3.6555463505698,3.48120218120422,3.38578045483743,3.38578045483743,3.48120218120422,3.6555463505698,3.87866727218381,4.11198531170926,4.31515766048434,4.453053973643,4.50183072589143,4.50183072589143],"y":[-0.229364633204994,0.000111944065554176,0.189909936396767,0.307211546653949,0.331734260771958,0.259237878697926,0.102257683501409,-0.112063022947812,-0.346666243462175,-0.560986949911397,-0.717967145107914,-0.790463527181945,-0.765940813063936,-0.648639202806755,-0.458841210475542,-0.229364633204994,-0.229364633204994],"text":"id: 10<br />as.factor(id): 10","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(232,96,45,0.5)","hoveron":"fills","name":"10","legendgroup":"10","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[4.11015600135239,4.06137924910396,3.9234829359453,3.72031058717022,3.48699254764477,3.26387162603076,3.08952745666518,2.99410573029839,2.99410573029839,3.08952745666518,3.26387162603076,3.48699254764477,3.72031058717022,3.9234829359453,4.06137924910396,4.11015600135239,4.11015600135239],"y":[-1.28758505206509,-1.05810847479454,-0.868310482463325,-0.751008872206143,-0.726486158088134,-0.798982540162166,-0.955962735358682,-1.1702834418079,-1.40488666232227,-1.61920736877149,-1.77618756396801,-1.84868394604204,-1.82416123192403,-1.70685962166685,-1.51706162933563,-1.28758505206509,-1.28758505206509],"text":"id: 11<br />as.factor(id): 11","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(245,125,21,0.5)","hoveron":"fills","name":"11","legendgroup":"11","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[3.25513186002301,3.20635510777458,3.06845879461592,2.86528644584084,2.63196840631539,2.40884748470138,2.2345033153358,2.13908158896901,2.13908158896901,2.2345033153358,2.40884748470138,2.63196840631539,2.86528644584084,3.06845879461592,3.20635510777458,3.25513186002301,3.25513186002301],"y":[-2.02390920790891,-1.79443263063836,-1.60463463830715,-1.48733302804996,-1.46281031393196,-1.53530669600599,-1.6922868912025,-1.90660759765173,-2.14121081816609,-2.35553152461531,-2.51251171981183,-2.58500810188586,-2.56048538776785,-2.44318377751067,-2.25338578517946,-2.02390920790891,-2.02390920790891],"text":"id: 12<br />as.factor(id): 12","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(251,158,7,0.5)","hoveron":"fills","name":"12","legendgroup":"12","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2.32234901103794,2.25336826647969,2.05835343020947,1.77102433907255,1.44106280322936,1.12552216983364,0.878962280996165,0.744015581423206,0.744015581423205,0.878962280996165,1.12552216983364,1.44106280322936,1.77102433907255,2.05835343020947,2.25336826647969,2.32234901103794,2.32234901103794],"y":[-2.72716979659454,-2.40264090877157,-2.13422601390559,-1.96833648579168,-1.93365613089979,-2.03618149765187,-2.25818501872276,-2.56128026848063,-2.89305932470845,-3.19615457446632,-3.41815809553721,-3.52068346228929,-3.4860031073974,-3.32011357928349,-3.05169868441751,-2.72716979659454,-2.72716979659454],"text":"id: 13<br />as.factor(id): 13","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(250,193,39,0.5)","hoveron":"fills","name":"13","legendgroup":"13","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.734983373301639,0.637429868804773,0.36163724248745,-0.0447074550627118,-0.511343534113602,-0.95758537734163,-1.30627371607279,-1.49711716880636,-1.49711716880636,-1.30627371607279,-0.957585377341631,-0.511343534113603,-0.0447074550627121,0.361637242487449,0.637429868804773,0.734983373301639,0.734983373301639],"y":[4.35968108676633,4.81863424130743,5.19823022596985,5.43283344648422,5.48187887472023,5.33688611057217,5.02292572017914,4.5942843072807,4.12507786625197,3.69643645335353,3.38247606296049,3.23748329881243,3.28652872704845,3.52113194756281,3.90072793222524,4.35968108676633,4.35968108676633],"text":"id: 14<br />as.factor(id): 14","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(243,229,92,0.5)","hoveron":"fills","name":"14","legendgroup":"14","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.20193988433807,1.15316313208964,1.01526681893098,0.812094470155898,0.578776430630453,0.355655509016439,0.181311339650858,0.0858896132840746,0.0858896132840745,0.181311339650858,0.355655509016439,0.578776430630453,0.812094470155898,1.01526681893098,1.15316313208964,1.20193988433807,1.20193988433807],"y":[-3.7610866171768,-3.53161003990626,-3.34181204757504,-3.22451043731786,-3.19998772319985,-3.27248410527388,-3.4294643004704,-3.64378500691962,-3.87838822743399,-4.09270893388321,-4.24968912907972,-4.32218551115376,-4.29766279703575,-4.18036118677856,-3.99056319444735,-3.7610866171768,-3.7610866171768],"text":"id: 15<br />as.factor(id): 15","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.5)","dash":"solid"},"fill":"toself","fillcolor":"rgba(252,255,164,0.5)","hoveron":"fills","name":"15","legendgroup":"15","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.564189583547756,1.69256875064327,-0.797884560802866,-3.1387537696351,-0.493533100104002,0.382392491506628,-0.818174082665824,1.94482030529196,4.18932626630352,3.93764114234368,3.54596641780464,2.69094227647526,1.52446445023507,-0.393395793793874,0.637750300790317],"y":[0,0,-2.14727927051282,0.726829153459605,1.12616482189888,1.83749730583078,2.48083693284617,3.17527008682592,1.57896028292994,-0.229364633204994,-1.28758505206509,-2.02390920790891,-2.72716979659454,4.35968108676633,-3.7610866171768],"text":["(I Believe In) Travellin' Light","(My Girl's Got) Miraculous Techniques,<br />Another Sunny Day,<br />Big John Shaft,<br />Black And White Unite,<br />Born To Act,<br />Chickfactor,<br />For The Price Of A Cup Of Tea,<br />I Didn't,<br />I Didn't See It Coming","A Century Of Elvis,<br />A Space Boy Dream,<br />Belle And Sebastian,<br />Beyond The Sunrise,<br />Dog On Wheels,<br />Family Tree,<br />I Fought In A War,<br />Nothing In The Silence","A Century Of Fakers,<br />Act Of The Apostle II,<br />Are You Coming Over For Christmas?,<br />Asleep On A Sunbeam,<br />Come On Sister,<br />Dress Up In You,<br />Ease Your Feet In The Sea,<br />Electronic Renaissance,<br />Expectations,<br />Funny Little Frog,<br />Get Me Away From Here, I'm Dying,<br />Heaven In The Afternoon,<br />I Can See Your Future,<br />I Could Be Dreaming","A Minha Menina","A Summer Wasting","Act of the Apostle I,<br />Beautiful","Allie,<br />Blue Eyes Of a Millionaire,<br />Calculating Bimbo,<br />Dear Catastrophe Waitress,<br />Dirty Dream Number Two,<br />Simple Things,<br />The Fox In The Snow","Consuelo,<br />Consuelo Leaving,<br />Fiction,<br />Fiction Reprise,<br />Freak","Crash","Desperation Made A Fool Of Me","Dialogue: Toby","Don't Leave The Light On Baby,<br />I Don't Love Anyone","Enter Sylvia Plath,<br />Ever Had a Little Faith?,<br />Judy & The Dream Of Horses,<br />We Rule The School","I Don't Want To Play Football"],"hovertext":["x: -0.5641896<br />y:  0.0000000<br />label: (I Believe In) Travellin' Light<br />n:  1","x:  1.6925688<br />y:  0.0000000<br />label: (My Girl's Got) Miraculous Techniques,<br />Another Sunny Day,<br />Big John Shaft,<br />Black And White Unite,<br />Born To Act,<br />Chickfactor,<br />For The Price Of A Cup Of Tea,<br />I Didn't,<br />I Didn't See It Coming<br />n:  9","x: -0.7978846<br />y: -2.1472793<br />label: A Century Of Elvis,<br />A Space Boy Dream,<br />Belle And Sebastian,<br />Beyond The Sunrise,<br />Dog On Wheels,<br />Family Tree,<br />I Fought In A War,<br />Nothing In The Silence<br />n:  8","x: -3.1387538<br />y:  0.7268292<br />label: A Century Of Fakers,<br />Act Of The Apostle II,<br />Are You Coming Over For Christmas?,<br />Asleep On A Sunbeam,<br />Come On Sister,<br />Dress Up In You,<br />Ease Your Feet In The Sea,<br />Electronic Renaissance,<br />Expectations,<br />Funny Little Frog,<br />Get Me Away From Here, I'm Dying,<br />Heaven In The Afternoon,<br />I Can See Your Future,<br />I Could Be Dreaming<br />n: 14","x: -0.4935331<br />y:  1.1261648<br />label: A Minha Menina<br />n:  1","x:  0.3823925<br />y:  1.8374973<br />label: A Summer Wasting<br />n:  1","x: -0.8181741<br />y:  2.4808369<br />label: Act of the Apostle I,<br />Beautiful<br />n:  2","x:  1.9448203<br />y:  3.1752701<br />label: Allie,<br />Blue Eyes Of a Millionaire,<br />Calculating Bimbo,<br />Dear Catastrophe Waitress,<br />Dirty Dream Number Two,<br />Simple Things,<br />The Fox In The Snow<br />n:  7","x:  4.1893263<br />y:  1.5789603<br />label: Consuelo,<br />Consuelo Leaving,<br />Fiction,<br />Fiction Reprise,<br />Freak<br />n:  5","x:  3.9376411<br />y: -0.2293646<br />label: Crash<br />n:  1","x:  3.5459664<br />y: -1.2875851<br />label: Desperation Made A Fool Of Me<br />n:  1","x:  2.6909423<br />y: -2.0239092<br />label: Dialogue: Toby<br />n:  1","x:  1.5244645<br />y: -2.7271698<br />label: Don't Leave The Light On Baby,<br />I Don't Love Anyone<br />n:  2","x: -0.3933958<br />y:  4.3596811<br />label: Enter Sylvia Plath,<br />Ever Had a Little Faith?,<br />Judy & The Dream Of Horses,<br />We Rule The School<br />n:  4","x:  0.6377503<br />y: -3.7610866<br />label: I Don't Want To Play Football<br />n:  1"],"textfont":{"size":[3.77952755905512,9.70933825929627,9.32635756123724,11.3385826771654,3.77952755905512,3.77952755905512,5.87603223770165,8.91489426509675,7.97253691634819,3.77952755905512,3.77952755905512,3.77952755905512,5.87603223770165,7.41078018077678,3.77952755905512],"color":"rgba(0,0,0,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":16,"r":0,"b":0,"l":0},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-5.7363533832543,5.98361852305493],"tickmode":"array","ticktext":["-3","0","3"],"tickvals":[-3,0,3],"categoryorder":"array","categoryarray":["-3","0","3"],"nticks":null,"ticks":"outside","tickcolor":null,"ticklen":0,"tickwidth":0,"showticklabels":false,"tickfont":{"color":null,"family":null,"size":0},"tickangle":-0,"showline":true,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":"","titlefont":{"color":null,"family":null,"size":0},"scaleanchor":"y","scaleratio":1,"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-4.81238873044745,5.97208209401393],"tickmode":"array","ticktext":["-2.5","0.0","2.5","5.0"],"tickvals":[-2.5,0,2.5,5],"categoryorder":"array","categoryarray":["-2.5","0.0","2.5","5.0"],"nticks":null,"ticks":"outside","tickcolor":null,"ticklen":0,"tickwidth":0,"showticklabels":false,"tickfont":{"color":null,"family":null,"size":0},"tickangle":-0,"showline":true,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":"","titlefont":{"color":null,"family":null,"size":0},"scaleanchor":"x","scaleratio":1,"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"source":"A","attrs":{"14d06c2b48b3":{"x":{},"y":{},"fill":{},"type":"scatter"},"14d0db21740":{"x":{},"y":{},"label":{},"size":{}}},"cur_data":"14d06c2b48b3","visdat":{"14d06c2b48b3":["function (y) ","x"],"14d0db21740":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+</div>
+<h1 id="wrap-up">Wrap Up</h1>
+<p>In this blog post, we:</p>
+<ul>
+<li>introduced the <code>vagalumeR</code> package, which extracts music lyrics and other information from the from the <a href="https://www.vagalume.com.br/">Vagalume</a> API.</li>
+<li>we used Belle &amp; Sebastian as an example of how the extraction is done.</li>
+<li>we presented a brief analysis of the music lyrics, along with a similarity.</li>
+</ul>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

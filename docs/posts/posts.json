@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2018-11-22-introduction-to-the-vagalumer-package/",
+    "title": "Introduction to the vagalumeR package",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Bruna Wundervald",
+        "url": "https://brunaw.com"
+      }
+    ],
+    "date": "2018-11-22",
+    "categories": [],
+    "preview": "posts/2018-11-22-introduction-to-the-vagalumer-package/img/login.png",
+    "last_modified": "2018-11-23T18:57:32+00:00",
+    "preview_width": 1850,
+    "preview_height": 838
+  },
+  {
     "path": "posts/2018-10-06-music21/",
     "title": "music21",
     "description": "A library for computer-aided musicology.",
@@ -16,7 +33,7 @@
     "date": "2018-10-06",
     "categories": [],
     "preview": "posts/2018-10-06-music21/README-note-1.png",
-    "last_modified": "2018-10-06T17:33:12-03:00",
+    "last_modified": "2018-11-23T19:02:49+00:00",
     "preview_width": 1248,
     "preview_height": 768
   },
@@ -37,7 +54,7 @@
     "date": "2018-10-01",
     "categories": [],
     "preview": "https://github.com/r-music/site/blob/master/img/Rspotify/logo.png?raw=true",
-    "last_modified": "2018-10-06T12:26:40-03:00"
+    "last_modified": "2018-11-23T19:02:49+00:00"
   },
   {
     "path": "posts/2018-08-19-chords-analysis-with-the-chorrrds-package/",
@@ -56,6 +73,6 @@
     "date": "2018-08-19",
     "categories": [],
     "preview": {},
-    "last_modified": "2018-10-06T12:26:40-03:00"
+    "last_modified": "2018-11-23T19:02:49+00:00"
   }
 ]
