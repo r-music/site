@@ -2,7 +2,7 @@
   {
     "path": "posts/2018-11-22-introduction-to-the-vagalumer-package/",
     "title": "Introduction to the vagalumeR package",
-    "description": "A short description of the post.",
+    "description": "A package to extract music lyrics!",
     "author": [
       {
         "name": "Bruna Wundervald",
@@ -12,7 +12,7 @@
     "date": "2018-11-22",
     "categories": [],
     "preview": "posts/2018-11-22-introduction-to-the-vagalumer-package/img/login.png",
-    "last_modified": "2018-11-23T18:57:32+00:00",
+    "last_modified": "2018-11-23T19:40:02+00:00",
     "preview_width": 1850,
     "preview_height": 838
   },
