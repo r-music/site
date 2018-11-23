@@ -38,7 +38,7 @@ we were asked to deliver some interesting analysis using text and
 the techniques we learned. As by that time I did not found anything 
 related to music lyrics datasets, I made the package to solve this problem :)
 
-# How to get the API
+# How to get the API key
 
 We are going to start by explaining how to get the *API key* .
 You will need to be aware that [Vagalume](https://www.vagalume.com.br/)
