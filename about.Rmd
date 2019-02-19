@@ -16,7 +16,7 @@ theory to amplify the utility and applications of
 music and audio data. These data have many forms
 of representation, each one carrying different
 levels of information. Music, for example, can be 
-represented by music sheets, chords, lyrics, 
+represented by music sheet, chords, lyrics, 
 MIDI and audio files, and so on.
 
 This blog has as its main goals to show how to extract

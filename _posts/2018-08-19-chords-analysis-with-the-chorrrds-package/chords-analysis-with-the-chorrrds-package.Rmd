@@ -28,8 +28,8 @@ knitr::opts_chunk$set(echo = TRUE)
 `chorrrds` is a package to retrieve and analyse music data. It scrapes 
 the [*Cifraclub*]() website to download and organize music chords.
 
-The main reason to create `chorrrds` was Bruna's undergrad thesis. In 
-her work, she did an end-to-end analysis, exploring feature engineering
+The main reason to create `chorrrds` was my undergrad thesis. In 
+my work, I did an end-to-end analysis, exploring feature engineering
 techniques to describe and predict musical genres from music chord 
 representation.
 
@@ -66,7 +66,30 @@ steps to obtain the data:
   1. Extraction of song urls for each music of an artist with `get_songs`.
   2. Extraction of music chords using the urls with `get_chords`.
 
-```{r, warning=FALSE, results='asis'}
+```{r, eval =  FALSE}
+library(tidyverse) 
+set.seed(20191)
+
+
+# Step 1: Getting the chords for some Janis Joplin songs
+songs <- "janis-joplin" %>% 
+  chorrrds::get_songs() %>% 
+  dplyr::sample_n(5)        # Selecting a random sample of 5 pieces 
+
+# Step 2: getting the chords for the selected songs
+chords <- songs %>% 
+  dplyr::pull(url) %>%                     
+  purrr::map(chorrrds::get_chords) %>%     # Mapping the function over the 
+                                           # selected urls
+  purrr::map_dfr(dplyr::mutate_if, is.factor, as.character)   %>% 
+  chorrrds::clean(message = FALSE)         # Cleans the dataset, in case
+                                           # strange elements, as music lyrics, 
+                                           # are present when they shouldn't
+
+chords %>% slice(1:10) 
+```
+
+```{r, warning=FALSE, results='asis', echo = FALSE}
 library(tidyverse) 
 set.seed(20191)
 
@@ -89,6 +112,7 @@ chords <- songs %>%
 chords %>% slice(1:10) %>% knitr::kable()
 ```
 
+
 The table above shows us how are the results of the `get_chords`
 function. As you can see, the data is in a long format: the chords 
 appear in the sequence they are in each music, being repeated
@@ -96,7 +120,17 @@ sometimes. The `music` column contains the name of the artist
 and the name of the song. This can be changed if preferred, 
 with: 
 
-```{r}
+```{r, eval = FALSE}
+chords <- chords %>% 
+  tidyr::separate(music, c("artist", "music"), 
+                  sep = "(?<=joplin) ", extra = "merge")
+
+
+chords %>% slice(1:10) 
+```
+
+
+```{r, echo = FALSE}
 chords <- chords %>% 
   tidyr::separate(music, c("artist", "music"), 
                   sep = "(?<=joplin) ", extra = "merge")
@@ -104,8 +138,6 @@ chords <- chords %>%
 
 chords %>% slice(1:10) %>% knitr::kable()
 ```
-
-
 ## Data
 
 There are many datasets that come with the package. They were
@@ -130,7 +162,16 @@ each music. Which are the common chords in music made
 by Janis Joplin? Are the proportions of these chords
 similar between the songs? 
 
-```{r}
+```{r, eval = FALSE}
+chords %>% 
+  dplyr::group_by(music) %>% 
+  dplyr::count(chord) %>%
+  dplyr::top_n(n, n = 3) %>%
+  dplyr::mutate(prop = scales::percent(n/sum(n))) 
+```
+
+
+```{r, echo = FALSE}
 chords %>% 
   dplyr::group_by(music) %>% 
   dplyr::count(chord) %>%
@@ -153,7 +194,16 @@ We can also look at something called "chord bigrams". This
 is pretty much the task of creating pairs of chords that 
 happened in sequence, by music, and analyze their frequencies. 
 
-```{r}
+```{r, eval = FALSE}
+chords %>%
+  dplyr::group_by(music) %>% 
+  tidytext::unnest_tokens(bigram, chord, to_lower = FALSE,
+                          token = "ngrams", n = 2) %>% 
+  dplyr::count(bigram) %>% 
+  dplyr::top_n(n, n = 2) 
+```
+
+```{r, echo = FALSE}
 chords %>%
   dplyr::group_by(music) %>% 
   tidytext::unnest_tokens(bigram, chord, to_lower = FALSE,
@@ -162,6 +212,7 @@ chords %>%
   dplyr::top_n(n, n = 2) %>%
   knitr::kable()
 ```
+
 
 There are some bigrams that happen a lot in a song, while 
 others just a few times, but are still the most frequent ones. In 

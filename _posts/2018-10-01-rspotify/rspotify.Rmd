@@ -1,5 +1,5 @@
 ---
-title: "Rspotify"
+title: "Introduction to the Rspotify package"
 description: |
   R package to connect with the Spotify API.
 preview: https://github.com/r-music/site/blob/master/img/Rspotify/logo.png?raw=true

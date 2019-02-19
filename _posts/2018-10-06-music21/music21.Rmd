@@ -1,5 +1,5 @@
 ---
-title: "music21"
+title: "Introduction to music21 in R"
 description: |
   A library for computer-aided musicology.
 author:
