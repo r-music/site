@@ -2,7 +2,7 @@
 title: "Connecting packages"
 description: |
   A post about how the combine the data from different sources.
-preview: https://github.com/r-music/site/blob/master/img/joins.png?raw=true
+preview: img/joins.png
 author:
   - name: "Bruna Wundervald"
     url: https://brunaw.com
