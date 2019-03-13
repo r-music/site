@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="radix" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+<title>R-Music: Connecting packages</title>
+
+<meta property="description" itemprop="description" content="R package to connect with the Spotify API."/>
+
+<link rel="canonical" href="https://r-music.rbind.io/posts/2019-03-13-connecting-packages/"/>
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2019-03-13"/>
+<meta property="article:created" itemprop="dateCreated" content="2019-03-13"/>
+<meta name="article:author" content="Bruna Wundervald"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="R-Music: Connecting packages"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="R package to connect with the Spotify API."/>
+<meta property="og:url" content="https://r-music.rbind.io/posts/2019-03-13-connecting-packages/"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="R-Music"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="R-Music: Connecting packages"/>
+<meta property="twitter:description" content="R package to connect with the Spotify API."/>
+<meta property="twitter:url" content="https://r-music.rbind.io/posts/2019-03-13-connecting-packages/"/>
+
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="R-Music: Connecting packages"/>
+<meta name="citation_fulltext_html_url" content="https://r-music.rbind.io/posts/2019-03-13-connecting-packages/"/>
+<meta name="citation_online_date" content="2019/03/13"/>
+<meta name="citation_publication_date" content="2019/03/13"/>
+<meta name="citation_author" content="Bruna Wundervald"/>
+<meta name="citation_author_institution" content="Maynooth University"/>
+<!--/radix_placeholder_meta_tags-->
+  
+  <meta name="citation_reference" content="citation_title=&lt;span class=&quot;nocase&quot;&gt;A normalized Levenshtein distance metric&lt;/span&gt;;citation_publication_date=2007;citation_doi=10.1109/TPAMI.2007.1078;citation_issn=01628828;citation_author=Li Yujian;citation_author=Liu Bo"/>
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","preview","author","date","bibliography","output","editor_options","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Connecting packages"]},{"type":"character","attributes":{},"value":["R package to connect with the Spotify API."]},{"type":"character","attributes":{},"value":["https://github.com/r-music/site/blob/master/img/Rspotify/logo.png?raw=true"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Bruna Wundervald"]},{"type":"character","attributes":{},"value":["https://brunaw.com"]},{"type":"character","attributes":{},"value":["Maynooth University"]},{"type":"character","attributes":{},"value":["https://www.maynoothuniversity.ie/"]}]}]},{"type":"character","attributes":{},"value":["03-13-2019"]},{"type":"character","attributes":{},"value":["bibli.bib"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["radix::radix_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["chunk_output_type"]}},"value":[{"type":"character","attributes":{},"value":["console"]}]},{"type":"character","attributes":{},"value":["https://r-music.rbind.io/posts/2019-03-13-connecting-packages/"]},{"type":"character","attributes":{},"value":["https://r-music.rbind.io/posts/2019-03-13-connecting-packages/"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["2019-03-12-connecting-packages_files/bowser-1.9.3/bowser.min.js","2019-03-12-connecting-packages_files/distill-2.2.21/template.v2.js","2019-03-12-connecting-packages_files/jquery-1.11.3/jquery.min.js","2019-03-12-connecting-packages_files/webcomponents-2.0.0/webcomponents.js","bibli.bib","data/muse/chords_muse.txt","data/muse/features_muse.txt","data/muse/lyrics_muse.txt"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.radix-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.radix-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #455a64;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.radix-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.radix-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .radix-site-nav {
+    display: none;
+  }
+}
+
+.radix-site-header {
+
+}
+
+.radix-site-footer {
+
+}
+
+
+/* Site Header */
+
+.radix-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.radix-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .radix-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.radix-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.radix-site-header a,
+.radix-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.radix-site-header .title {
+  font-size: 18px;
+}
+
+.radix-site-header .logo {
+  padding: 0;
+}
+
+.radix-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.radix-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .radix-site-header .logo img {
+    display: inline-block;
+  }
+  .radix-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .radix-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .radix-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.radix-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .radix-site-header a, .radix-site-header .nav-dropdown  {display: none;}
+  .radix-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .radix-site-header .title {
+    margin-left: 0;
+  }
+  .radix-site-header .nav-right {
+    margin-right: 0;
+  }
+  .radix-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .radix-site-header.responsive {position: relative;}
+  .radix-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .radix-site-header.responsive a,
+  .radix-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .radix-site-header.responsive .nav-left,
+  .radix-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .radix-site-header.responsive .nav-dropdown {float: none;}
+  .radix-site-header.responsive .nav-dropdown-content {position: relative;}
+  .radix-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.radix-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+</style>
+
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for table of contents */
+
+.d-toc {
+  color: rgba(0,0,0,0.8);
+  font-size: 0.8em;
+  line-height: 1em;
+}
+
+.d-toc-header {
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 1.3em;
+}
+
+.d-toc a {
+  border-bottom: none;
+}
+
+.d-toc ul {
+  padding-left: 0;
+}
+
+.d-toc li>ul {
+  padding-top: 0.8em;
+  padding-left: 16px;
+  margin-bottom: 0.6em;
+}
+
+.d-toc ul,
+.d-toc li {
+  list-style-type: none;
+}
+
+.d-toc li {
+  margin-bottom: 0.9em;
+}
+
+.d-toc-separator {
+  margin-top: 20px;
+  margin-bottom: 2em;
+}
+
+.d-article-with-toc {
+  border-top: none;
+  padding-top: 0;
+}
+
+
+
+/* Tweak code blocks (note that this CSS is repeated above in an injection
+   into the d-code shadow dom) */
+
+d-code {
+  overflow-x: auto !important;
+}
+
+pre.d-code code.d-code {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+pre.text-output {
+
+  font-size: 12px;
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+@media(min-width: 768px) {
+
+d-code {
+  overflow-x: visible !important;
+}
+
+pre.d-code code.d-code  {
+    padding-left: 18px;
+    font-size: 14px;
+}
+pre.text-output {
+  font-size: 14px;
+}
+}
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // create d-bibliography
+  var bibliography = $('<d-bibliography></d-bibliography>');
+  $('#distill-bibliography').wrap(bibliography);
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace citations with <d-cite>
+  $('.citation').each(function(i, val) {
+    appendix = true;
+    var cites = $(this).attr('data-cites').split(" ");
+    var dt_cite = $('<d-cite></d-cite>');
+    dt_cite.attr('key', cites.join());
+    $(this).replaceWith(dt_cite);
+  });
+  // remove refs
+  $('#refs').remove();
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-toc a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // replace code blocks with d-code
+  $('pre>code').each(function(i, val) {
+    var code = $(this);
+    var pre = code.parent();
+    var clz = "";
+    var language = pre.attr('class');
+    if (language) {
+      // map unknown languages to "clike" (without this they just dissapear)
+      if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                               "javascript", "js", "julia", "lua", "markdown",
+                               "markup", "mathml", "python", "svg", "xml"]) == -1)
+        language = "clike";
+      language = ' language="' + language + '"';
+      var dt_code = $('<d-code block' + language + clz + '></d-code>');
+      dt_code.text(code.text());
+      pre.replaceWith(dt_code);
+    } else {
+      code.addClass('text-output').unwrap().changeElementType('pre');
+    }
+  });
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('d-code, pre.text-output, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // table of contents
+    if (have_authors) // adjust border if we are in authors
+      $('.d-toc').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+    $('d-code').each(function(i, val) {
+      var style = document.createElement('style');
+      style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                        '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+      if (this.shadowRoot)
+        this.shadowRoot.appendChild(style);
+    });
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-toc-header').remove();
+  $('.d-toc').remove();
+  $('.d-toc-separator').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.radix-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<style type="text/css">
+.radix-site-nav {
+    color: rgba(255, 255, 255, 0.8);
+    background-color: #990000;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+@media only screen and (max-width: 600px) {
+  d-title{
+    background-image: url('img/logo2.png');
+    background-repeat: no-repeat;
+    background-position: 95% 70%;
+    background-size: initial;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  d-title{
+    background-image: url('img/logo3.png');
+    background-repeat: no-repeat;
+    background-position: 63% 70%;
+    background-size: initial;
+  }
+}
+
+
+img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+</style>
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Connecting packages","description":"R package to connect with the Spotify API.","authors":[{"author":"Bruna Wundervald","authorURL":"https://brunaw.com","affiliation":"Maynooth University","affiliationURL":"https://www.maynoothuniversity.ie/"}],"publishedDate":"2019-03-13T00:00:00.000+00:00","citationText":"Wundervald, 2019"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="radix-site-nav radix-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">R-Music</a>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Posts</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Connecting packages</h1>
+<p>R package to connect with the Spotify API.</p>
+</div>
+
+<div class="d-byline">
+  Bruna Wundervald <a href="https://brunaw.com" class="uri">https://brunaw.com</a> (Maynooth University)<a href="https://www.maynoothuniversity.ie/" class="uri">https://www.maynoothuniversity.ie/</a>
+  
+<br/>03-13-2019
+</div>
+
+<div class="d-article">
+<p>Today we are going to talk a little about how to ‘connect’ the data obtained from different R-Music packages. For example, the <code>chorrds</code>, <code>vagalumeR</code> and <code>Rspotify</code> packages can extract data for all of the songs of an artist. However, sometimes the name of the songs might not be written the same in the APIs or website (in the case of the <code>chorrrds</code> package). This means that some extra work to correct these disagreements between the names might be necessary, if we don’t want to lose too many observations when joining data from different sources.</p>
+<p>This situation is actually very common in a diversity of contexts. Very often, we need to fix strings and joining keys in our data, specially when it comes from public sources. Because of that, the topic of this post is not restricted to the application to music data.</p>
+<p>First, we need to load the necessary packages for obtaining the data (and <code>tidyverse</code>, of course). A detailed explanation of how to do so for each package considered is presented <a href="https://r-music.rbind.io/posts/2018-08-19-chords-analysis-with-the-chorrrds-package/">here</a>, <a href="https://r-music.rbind.io/posts/2018-11-22-introduction-to-the-vagalumer-package/">here</a> and <a href="https://r-music.rbind.io/posts/2018-10-01-rspotify/">here</a>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(tidyverse)
+library(chorrrds)
+library(vagalumeR)
+library(Rspotify)
+
+# Setting our artist of interest
+artist &lt;- &quot;muse&quot;</code></pre>
+</div>
+<p>Here, we’ll be working with the data about <em>Muse</em>,<br />
+a very well known British rock band. Below, we proceed by obtaining the music chords for the band:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Getting the chords
+songs_chords &lt;- get_songs(artist) 
+chords &lt;- get_chords(songs_chords$url)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+chords %&gt;% glimpse()</code></pre>
+<pre><code>
+Observations: 3,427
+Variables: 3
+$ chord &lt;fct&gt; B, C, B, B, C, F#m, E, Bm, D, A5, E, F#m, E, Bm, D, A…
+$ key   &lt;fct&gt; G, G, G, G, G, A, A, A, A, A, A, A, A, A, A, A, A, A,…
+$ music &lt;fct&gt; muse a crying shame, muse a crying shame, muse a cryi…</code></pre>
+</div>
+<p>From the <code>glimpse</code> of the data, we can see that everything is as expected. Next, we obtain the lyrics:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+lyrics &lt;- read.table(&quot;data/muse/lyrics_muse.txt&quot;)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+key_vg &lt;- &quot;your-api-key-to-vagalume&quot;
+# song names retrieval to get the lyrics
+song &lt;- songNames(artist)
+
+lyrics &lt;- song %&gt;% 
+  dplyr::pull(song.id) %&gt;% 
+  purrr::map_df(lyrics, 
+                artist = artist,
+                type = &quot;id&quot;, 
+                key = key_vg)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+lyrics %&gt;% glimpse()</code></pre>
+<pre><code>
+Observations: 142
+Variables: 7
+$ song.id     &lt;fct&gt; 3ade68b6g056deda3, 3ade68b6g066deda3, 3ade68b6g…
+$ song        &lt;fct&gt; &quot;Uno&quot;, &quot;Screenager&quot;, &quot;Sober&quot;, &quot;Plug In Baby&quot;, &quot;…
+$ id          &lt;fct&gt; 3ade68b6g056deda3, 3ade68b6g066deda3, 3ade68b6g…
+$ name_artist &lt;fct&gt; muse, muse, muse, muse, muse, muse, muse, muse,…
+$ language    &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+$ text        &lt;fct&gt; &quot;This means nothing to me Cos you are nothing t…
+$ translation &lt;fct&gt; &quot;Isso não significa nada para mim, Porque você …</code></pre>
+</div>
+<p>All good here too. The <code>Spotify</code> data is extracted with:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+key_sp &lt;- &quot;your-authentication-key-to-spotify&quot;
+
+find_artist &lt;- searchArtist(artist, token = key_sp)
+muse_albums &lt;- getAlbums(find_artist$id[1], token = key_sp)
+
+muse_songs &lt;- muse_albums %&gt;% 
+  dplyr::pull(id) %&gt;% 
+  purrr::map_df(
+    ~{
+      getAlbum(.x, token = key_sp) %&gt;% 
+        dplyr::select(id, name) 
+    }) %&gt;% 
+  dplyr::unnest()
+
+features &lt;- muse_songs %&gt;% 
+  dplyr::pull(id) %&gt;% 
+  purrr::map_df(getFeatures, token = key_sp) %&gt;% 
+  dplyr::left_join(muse_songs, by = &quot;id&quot;)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+features &lt;- read.table(&quot;data/muse/features_muse.txt&quot;)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+features %&gt;% glimpse() </code></pre>
+<pre><code>
+Observations: 155
+Variables: 17
+$ id               &lt;fct&gt; 7f0vVL3xi4i78Rv5Ptn2s1, 0dMYPDqcI4ca4cjqlm…
+$ danceability     &lt;dbl&gt; 0.522, 0.484, 0.622, 0.754, 0.667, 0.590, …
+$ energy           &lt;dbl&gt; 0.923, 0.927, 0.842, 0.675, 0.967, 0.903, …
+$ key              &lt;int&gt; 2, 2, 11, 2, 1, 9, 5, 4, 7, 0, 7, 8, 0, 4,…
+$ loudness         &lt;dbl&gt; -4.560, -3.759, -3.678, -4.616, -0.759, -4…
+$ mode             &lt;int&gt; 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, …
+$ speechiness      &lt;dbl&gt; 0.0539, 0.0425, 0.0609, 0.0939, 0.0939, 0.…
+$ acousticness     &lt;dbl&gt; 0.012500, 0.000884, 0.003420, 0.025100, 0.…
+$ instrumentalness &lt;dbl&gt; 1.70e-02, 3.96e-06, 1.40e-04, 4.19e-03, 2.…
+$ liveness         &lt;dbl&gt; 0.0854, 0.2230, 0.0575, 0.5130, 0.0596, 0.…
+$ valence          &lt;dbl&gt; 0.5950, 0.3890, 0.7240, 0.4320, 0.6140, 0.…
+$ tempo            &lt;dbl&gt; 170.057, 99.979, 136.041, 95.024, 90.015, …
+$ duration_ms      &lt;int&gt; 245960, 227213, 235600, 180507, 217560, 22…
+$ time_signature   &lt;int&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, …
+$ uri              &lt;fct&gt; spotify:track:7f0vVL3xi4i78Rv5Ptn2s1, spot…
+$ analysis_url     &lt;fct&gt; https://api.spotify.com/v1/audio-analysis/…
+$ name             &lt;fct&gt; Algorithm, The Dark Side, Pressure, Propag…</code></pre>
+</div>
+<p>Good! Now we have the 3 datasets, which all came from different sources. Our next step is to try to make the column that has the name of the song the most similar in the tree <code>data.frame</code>, with:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Adjusting the name column for our datasets
+chords &lt;- chords %&gt;% 
+  dplyr::mutate(song = stringr::str_remove(music, &quot;muse &quot;)) %&gt;% 
+  dplyr::select(-music)
+
+lyrics &lt;- lyrics %&gt;% 
+  dplyr::mutate(song = stringr::str_to_lower(song))
+
+features &lt;- features %&gt;% 
+  dplyr::mutate(song = stringr::str_to_lower(name)) %&gt;% 
+  dplyr::select(-name)</code></pre>
+</div>
+<p>We performed just some small changes, as making the name of the songs lower case and removing the name of the band from the song column. We also created a column with the same name in the 3 datasets, so this will be standardized from now on. When we <code>inner_join</code> the data, there are some rows that don’t match. This demonstrates that we’ll have some work to do here to minimize the damage:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+unite_muse &lt;- chords %&gt;% 
+  dplyr::inner_join(lyrics, by = &quot;song&quot;) %&gt;% 
+  dplyr::inner_join(features, by = &quot;song&quot;)
+  
+nrow(chords) - nrow(unite_muse)</code></pre>
+<pre><code>
+[1] 727</code></pre>
+</div>
+<p>727 is the total of rows that did not match between the three datasets. Our next approach is to look closer in each data and think about how we can fix it. Let’s see which song the chords and the lyrics files <em>don’t</em> have in common:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Songs that didn&#39;t match between the chords and lyrics data
+anti_chords_lyrics &lt;- chords %&gt;% 
+  dplyr::anti_join(lyrics, by = &quot;song&quot;) 
+
+anti_chords_lyrics %&gt;% dplyr::distinct(song)</code></pre>
+<pre><code>
+                                        song
+1                          black black heart
+2                  cant take my eyes off you
+3            cant take my eyes off you 57980
+4                                 conscience
+5                         feeling good 43870
+6                 hate this and ill love you
+7                                hyper music
+8       i belong to you mon coeur souvre toi
+9                         knights of cydonia
+10                               map of head
+11                    neutron star collision
+12                   neutron star collision 
+13 please please please let me get what want
+14                             soldiers poem</code></pre>
+</div>
+<p>We have our mismatches. First, we’ll remove those numbers from the <code>song</code> column in the chords data, and fix two songs that we know by eye that are wrong:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+chords &lt;- chords %&gt;% 
+  dplyr::mutate(
+    song = stringr::str_remove(song, &quot;[0-9]{2,7}$&quot;), 
+    song = stringr::str_replace(song, &quot; $&quot;, &quot;&quot;), 
+    song = ifelse(
+      stringr::str_detect(
+        song, &quot;map of head|map of your head&quot;), 
+      &quot;map of your head&quot;, song),
+    song = ifelse(
+      stringr::str_detect(
+        song, &quot;hyper music|hyper chondriac music&quot;), 
+      &quot;hyper music&quot;, song))</code></pre>
+</div>
+<p>But we can’t actually be fixing every song by eye. This can be exhaustive and potentially lead to mistakes. We’ll use a distance measure between the strings to get the next results.</p>
+<p>The <code>RecordLinkage</code> package contains the <code>levenshteinSim</code> function, that calculates a similarity measure based on the Levenshtein distance for two strings. There are different functions in <code>R</code> that use Levenshtein, but this one in specific has a easy interpretation, since it returns a normalized number (between 0 and 1), being 1 the most similar possible. As for the Levenshtein distance, this value is given by the minimum of single-character edits needed to go from one string to another. See more in (<span class="citation" data-cites="Yujian2007">Yujian and Bo (<a href="#ref-Yujian2007">2007</a>)</span>).</p>
+<p>Let’s get back to the code. Below, we show how to find the most similar song names of the ones that didn’t exactly match:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(RecordLinkage)
+
+# Updating the anti_chords_lyrics
+anti_chords_lyrics &lt;- chords %&gt;% 
+  dplyr::anti_join(lyrics, by = &quot;song&quot;) 
+
+# Saving names that didn&#39;t match
+names_to_fix &lt;- anti_chords_lyrics %&gt;% 
+  dplyr::distinct(song) %&gt;% 
+  dplyr::pull(song)
+
+# Finding the distances between each song in the lyrics data and 
+# the ones that didn&#39;t match
+dists &lt;- lyrics$song %&gt;% 
+  purrr::map(levenshteinSim, str1 = names_to_fix)
+
+# Finding the biggest similarities between the songs 
+# in the lyrics data and the ones that didn&#39;t match
+ordered_dists &lt;- dists %&gt;% purrr::map_dbl(max)
+max_dists &lt;- dists %&gt;% purrr::map_dbl(which.max)
+
+# Filtering to have only similarities &gt; 0.50
+indexes_min_dist &lt;- which(ordered_dists &gt; 0.50)
+songs_min_dist &lt;- lyrics$song[indexes_min_dist]
+index_lyrics &lt;- max_dists[which(ordered_dists &gt; 0.50)]
+
+# Saving the most similar string in the chords and 
+# lyrics data 
+results_dist_lyrics &lt;- data.frame(
+  from_chords = names_to_fix[index_lyrics],
+           from_lyrics = songs_min_dist)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">from_chords</th>
+<th style="text-align: left;">from_lyrics</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">hate this and ill love you</td>
+<td style="text-align: left;">hate this &amp; i’ll love you</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">please please please let me get what want</td>
+<td style="text-align: left;">please, please, please let me get what i want</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soldiers poem</td>
+<td style="text-align: left;">soldier’s poem</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">conscience</td>
+<td style="text-align: left;">con-science</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cant take my eyes off you</td>
+<td style="text-align: left;">can’t take my eyes off you</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">hyper music</td>
+<td style="text-align: left;">hyper chondriac music</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">i belong to you mon coeur souvre toi</td>
+<td style="text-align: left;">i belong to you/mon coeur s’ouvre à ta voix</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">neutron star collision</td>
+<td style="text-align: left;">neutron star collision (love is forever)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The strings found with the <code>&gt;0.5</code> criteria are actually quite similar, right? We can now transform the similar strings in only one version, so it will match in both datasets. We do it with the <code>case_when</code> function, as written below:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+lyrics &lt;- lyrics %&gt;% 
+  dplyr::mutate(
+    song = 
+      dplyr::case_when( 
+        song == &quot;hate this &amp; i&#39;ll love you&quot; ~ &quot;hate this and ill love you&quot;,
+        song == &quot;please, please, please let me get what i want&quot; ~ &quot;please please please let me get what want&quot;,          
+        song == &quot;soldier&#39;s poem&quot; ~ &quot;soldiers poem&quot;,
+        song == &quot;con-science&quot; ~ &quot;conscience&quot;,
+        song == &quot;can&#39;t take my eyes off you&quot; ~ &quot;cant take my eyes off you&quot;,
+        song == &quot;hyper chondriac music&quot; ~ &quot;hyper music&quot;,
+        song ==  &quot;i belong to you/mon coeur s&#39;ouvre à ta voix&quot; ~ &quot;i belong to you mon coeur souvre toi&quot;,
+        song ==  &quot;neutron star collision (love is forever)&quot; ~ &quot;neutron star collision&quot;,
+        TRUE ~ song))</code></pre>
+</div>
+<p>Now the <code>anti_join</code> of the two datasets is smaller and we are losing way less information :)</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+chords %&gt;%  dplyr::anti_join(lyrics, by = &quot;song&quot;) %&gt;% dplyr::distinct(song) </code></pre>
+<pre><code>
+                song
+1  black black heart
+2 knights of cydonia</code></pre>
+</div>
+<p>Note that you can use <code>paste</code> to create the syntax for <code>case_when</code> automatically, something like:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+paste0(
+  paste0(&quot;song == &quot;, &quot;&#39;&quot;, results_dist_lyrics$from_chords, &quot;&#39; ~ &#39;&quot;, 
+         results_dist_lyrics$from_lyrics, &quot;&#39;, &quot;), collapse = &quot;&quot;)</code></pre>
+</div>
+<p>This was for the chords and lyrics datasets. We are setting the chords data as the ‘baseline’, so every string we correct, is being corrected to the version found in the chords data. In the following, we do the same procedure for the features data, we try to make it closer to the song names available in the chords extraction:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# Songs that didn&#39;t match between the chords and features data
+anti_chords_features &lt;- chords %&gt;% 
+  dplyr::anti_join(features, by = &quot;song&quot;) 
+
+anti_chords_features %&gt;% dplyr::distinct(song)</code></pre>
+<pre><code>
+                                        song
+1                             a crying shame
+2                          black black heart
+3                  cant take my eyes off you
+4                                 conscience
+5                                dark shines
+6                                     easily
+7                           eternally missed
+8                 hate this and ill love you
+9       i belong to you mon coeur souvre toi
+10                             in your world
+11                    neutron star collision
+12 please please please let me get what want
+13                             soldiers poem
+14                  united states of eurasia</code></pre>
+</div>
+<p>And finding the very similar strings:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+names_to_fix &lt;- anti_chords_features %&gt;% 
+  dplyr::distinct(song) %&gt;% 
+  dplyr::pull(song)
+
+dists &lt;- features$song %&gt;% 
+  purrr::map(levenshteinSim, str1 = names_to_fix)
+
+ordered_dists &lt;- dists %&gt;% purrr::map_dbl(max)
+index_dists &lt;- dists %&gt;% purrr::map_dbl(which.max)
+
+indexes_min_dist &lt;- which(ordered_dists &gt; 0.50)
+songs_min_dist &lt;- features$song[indexes_min_dist]
+index_features &lt;- index_dists[which(ordered_dists &gt; 0.50)]
+
+results_dist_features &lt;- data.frame(
+  from_chords = names_to_fix[index_features],
+  from_features = songs_min_dist)</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+results_dist_features %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">from_chords</th>
+<th style="text-align: left;">from_features</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">united states of eurasia</td>
+<td style="text-align: left;">united states of eurasia (+collateral damage)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">i belong to you mon coeur souvre toi</td>
+<td style="text-align: left;">i belong to you (+mon coeur s’ouvre a ta voix)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">soldiers poem</td>
+<td style="text-align: left;">soldier’s poem</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">dark shines</td>
+<td style="text-align: left;">darkshines</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">hate this and ill love you</td>
+<td style="text-align: left;">hate this and i’ll love you</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Again, we have strings that are very close and probably refer to the same song (we can see it by eye). Let’s use this information to correct the names of the song in the lyrics data:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+features &lt;- features %&gt;% 
+  dplyr::mutate(
+    song = dplyr::case_when( 
+      song == &quot;united states of eurasia (+collateral damage)&quot; ~ 
+        &quot;united states of eurasia&quot;,
+      song == &quot;i belong to you (+mon coeur s&#39;ouvre a ta voix)&quot; ~ &quot;i belong to you mon coeur souvre toi&quot;,          
+      song == &quot;soldier&#39;s poem&quot; ~ &quot;soldiers poem&quot;,
+      song == &quot;darkshines&quot; ~ &quot;dark shines&quot;,
+      song == &quot;hate this and i&#39;ll love you&quot; ~ &quot;hate this and ill love you&quot;,
+      TRUE ~ song))
+
+chords %&gt;%   
+  dplyr::anti_join(features, by = &quot;song&quot;) %&gt;% 
+  dplyr::distinct(song)</code></pre>
+<pre><code>
+                                       song
+1                            a crying shame
+2                         black black heart
+3                 cant take my eyes off you
+4                                conscience
+5                                    easily
+6                          eternally missed
+7                             in your world
+8                    neutron star collision
+9 please please please let me get what want</code></pre>
+</div>
+<p>We reduced a little bit more our mismatches in the three datasets. What can also happen is that a mismatch is not a result from different ways of writing a song name, but of songs that really don’t exist in all the three datasets. The final rows difference between the original and final data is:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+final_data &lt;- chords %&gt;% 
+  dplyr::inner_join(lyrics, by = &quot;song&quot;) %&gt;% 
+  dplyr::inner_join(features, by = &quot;song&quot;) 
+
+nrow(chords) - nrow(final_data) </code></pre>
+<pre><code>
+[1] 413</code></pre>
+</div>
+<p>So we managed to ‘save’ more than 300 rows of the data by doing some small fixes in the key that connects the three datasets, and there is still plenty of room for improvements. The final glimpse of the data is:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+final_data %&gt;% glimpse() </code></pre>
+<pre><code>
+Observations: 3,014
+Variables: 25
+$ chord            &lt;fct&gt; F#m, E, Bm, D, A5, E, F#m, E, Bm, D, A5, E…
+$ key.x            &lt;fct&gt; A, A, A, A, A, A, A, A, A, A, A, A, A, A, …
+$ song             &lt;chr&gt; &quot;aftermath&quot;, &quot;aftermath&quot;, &quot;aftermath&quot;, &quot;af…
+$ song.id          &lt;fct&gt; 3ade68b8ge9a180b3, 3ade68b8ge9a180b3, 3ade…
+$ id.x             &lt;fct&gt; 3ade68b8ge9a180b3, 3ade68b8ge9a180b3, 3ade…
+$ name_artist      &lt;fct&gt; muse, muse, muse, muse, muse, muse, muse, …
+$ language         &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ text             &lt;fct&gt; War is all around  I&#39;m growing tired of fi…
+$ translation      &lt;fct&gt; [Aftermath] A guerra é tudo ao redor  Eu e…
+$ id.y             &lt;fct&gt; 2z1D4PqjWYEsXeXxE6euQ2, 2z1D4PqjWYEsXeXxE6…
+$ danceability     &lt;dbl&gt; 0.295, 0.295, 0.295, 0.295, 0.295, 0.295, …
+$ energy           &lt;dbl&gt; 0.495, 0.495, 0.495, 0.495, 0.495, 0.495, …
+$ key.y            &lt;int&gt; 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, …
+$ loudness         &lt;dbl&gt; -7.646, -7.646, -7.646, -7.646, -7.646, -7…
+$ mode             &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ speechiness      &lt;dbl&gt; 0.0316, 0.0316, 0.0316, 0.0316, 0.0316, 0.…
+$ acousticness     &lt;dbl&gt; 0.215, 0.215, 0.215, 0.215, 0.215, 0.215, …
+$ instrumentalness &lt;dbl&gt; 0.0112, 0.0112, 0.0112, 0.0112, 0.0112, 0.…
+$ liveness         &lt;dbl&gt; 0.122, 0.122, 0.122, 0.122, 0.122, 0.122, …
+$ valence          &lt;dbl&gt; 0.115, 0.115, 0.115, 0.115, 0.115, 0.115, …
+$ tempo            &lt;dbl&gt; 72.09, 72.09, 72.09, 72.09, 72.09, 72.09, …
+$ duration_ms      &lt;int&gt; 347997, 347997, 347997, 347997, 347997, 34…
+$ time_signature   &lt;int&gt; 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, …
+$ uri              &lt;fct&gt; spotify:track:2z1D4PqjWYEsXeXxE6euQ2, spot…
+$ analysis_url     &lt;fct&gt; https://api.spotify.com/v1/audio-analysis/…</code></pre>
+</div>
+<p>Our final dataset combines 3 data sources and is very rich. We won’t analyze it at this moment, but it’s clear that the possibilities are infinite here.</p>
+<h2 id="wrap-up">Wrap-up</h2>
+<p>To combine datasets from different sources, one often challenge is: fix the mismatchings in the joining key. Here, we joined data from the <code>chorrds</code>, <code>vagalumeR</code> and <code>Rspotify</code> packages. The approaches to deal with mismatching song names were:</p>
+<ul>
+<li>Standardized column names and lower cases;</li>
+<li>Fix some cases by eye;</li>
+<li>Use a distance measure to find the most similar strings.</li>
+</ul>
+<p>We ended up by saving more than 300 rows of observations that would be wasted otherwise, and finished with a complete dataset, that contains information about the chords, the lyrics and the Spotify variables of the <em>Muse</em> songs.</p>
+<div id="refs" class="references">
+<div id="ref-Yujian2007">
+<p>Yujian, Li, and Liu Bo. 2007. “A normalized Levenshtein distance metric.” <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>. <a href="https://doi.org/10.1109/TPAMI.2007.1078">https://doi.org/10.1109/TPAMI.2007.1078</a>.</p>
+</div>
+</div>
+<!--radix_placeholder_article_footer-->
+<div class="article-footer">
+  <p class="social_footer">
+    <span class="disqus-comments">
+      <i class="fas fa-comments"></i>
+      &nbsp;
+      <span class="disqus-comment-count" data-disqus-identifier="posts/2019-03-13-connecting-packages/">Comment on this article</span>
+    </span>
+    <span class="article-sharing">
+      Share: &nbsp;
+      <a href="https://twitter.com/share?text=Connecting%20packages&amp;url=https%3A%2F%2Fr-music.rbind.io%2Fposts%2F2019-03-13-connecting-packages%2F">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fr-music.rbind.io%2Fposts%2F2019-03-13-connecting-packages%2F&amp;title=Connecting%20packages">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </span>
+  </p>
+  <script id="dsq-count-scr" src="https://r-music.disqus.com/count.js" async></script>
+  <div id="disqus_thread" class="hidden"></div>
+  <script>
+var disqus_config = function () {
+  this.page.url = 'https://r-music.rbind.io/posts/2019-03-13-connecting-packages/';
+  this.page.identifier = 'posts/2019-03-13-connecting-packages/';
+};
+(function() {
+  var d = document, s = d.createElement('script');
+  s.src = 'https://r-music.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+</div>
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">Wundervald (2019, March 13). R-Music: Connecting packages. Retrieved from https://r-music.rbind.io/posts/2019-03-13-connecting-packages/</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{wundervald2019connecting,
+  author = {Wundervald, Bruna},
+  title = {R-Music: Connecting packages},
+  url = {https://r-music.rbind.io/posts/2019-03-13-connecting-packages/},
+  year = {2019}
+}</pre>
+</div>
+<script id="distill-bibliography" type="text/bibtex">
+@article{Yujian2007,
+abstract = {Although a number of normalized edit distances presented so far may offer good performance in some applications, none of them can be regarded as a genuine metric between strings because they do not satisfy the triangle inequality. Given two strings X and Y over a finite alphabet, this paper defines a new normalized edit distance between X and Y as a simple function of their lengths (|X| and |Y|) and the Generalized Levenshtein Distance (GLD) between them. The new distance can be easily computed through GLD with a complexity of O(|X| cdot |Y|) and it is a metric valued in [0, 1] under the condition that the weight function is a metric over the set of elementary edit operations with all costs of insertions/deletions having the same weight. Experiments using the AESA algorithm in handwritten digit recognition show that the new distance can generally provide similar results to some other normalized edit distances and may perform slightly better if the triangle inequality is violated in a particular data set.},
+author = {Yujian, Li and Bo, Liu},
+doi = {10.1109/TPAMI.2007.1078},
+issn = {01628828},
+journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+keywords = {AESA,Levenshtein distance,Metric,Normalized edit distance,Sequence comparison},
+pmid = {17431306},
+title = {{A normalized Levenshtein distance metric}},
+year = {2007}
+}
+</script>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

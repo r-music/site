@@ -1,0 +1,394 @@
+---
+title: "Connecting packages"
+description: |
+  R package to connect with the Spotify API.
+preview: https://github.com/r-music/site/blob/master/img/Rspotify/logo.png?raw=true
+author:
+  - name: "Bruna Wundervald"
+    url: https://brunaw.com
+    affiliation: Maynooth University
+    affiliation_url: https://www.maynoothuniversity.ie/
+date: 03-13-2019
+bibliography: bibli.bib
+output:
+  radix::radix_article:
+    self_contained: false
+editor_options: 
+  chunk_output_type: console
+---  
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Today we are going to talk a little about how to 'connect' the data
+obtained from different R-Music packages. For example, 
+the `chorrds`, `vagalumeR` and `Rspotify` packages can extract data for
+all of the songs of an artist. However, sometimes the name of the songs
+might not be written the same in the APIs or website
+(in the case of the `chorrrds` package). This means that some extra work
+to correct these disagreements between the names might be necessary,
+if we don't want to lose too many observations when joining data
+from different sources. 
+
+This situation is actually very common in a diversity of contexts. 
+Very often, we need to fix strings and joining keys in our data, 
+specially when it comes from public sources. Because of that, the topic
+of this post is not restricted to the application to music data. 
+
+
+First, we need to load the necessary packages for obtaining the data 
+(and `tidyverse`, of course). A detailed
+explanation of how to do so for each package considered
+is presented [here](https://r-music.rbind.io/posts/2018-08-19-chords-analysis-with-the-chorrrds-package/),
+[here](https://r-music.rbind.io/posts/2018-11-22-introduction-to-the-vagalumer-package/)
+and [here](https://r-music.rbind.io/posts/2018-10-01-rspotify/).  
+
+```{r}
+library(tidyverse)
+library(chorrrds)
+library(vagalumeR)
+library(Rspotify)
+
+# Setting our artist of interest
+artist <- "muse"
+```
+
+Here, we'll be working with the data about *Muse*,  
+a very well known British rock band. Below, we proceed by obtaining the
+music chords for the band: 
+
+```{r, eval = FALSE}
+# Getting the chords
+songs_chords <- get_songs(artist) 
+chords <- get_chords(songs_chords$url)
+```
+
+```{r, echo = FALSE}
+chords <- read.table("data/muse/chords_muse.txt")
+```
+
+```{r}
+chords %>% glimpse()
+``` 
+
+From the `glimpse` of the data, we can see that everything is as 
+expected. Next, we obtain the lyrics: 
+
+```{r}
+lyrics <- read.table("data/muse/lyrics_muse.txt")
+```
+
+```{r, eval = FALSE}
+key_vg <- "your-api-key-to-vagalume"
+# song names retrieval to get the lyrics
+song <- songNames(artist)
+
+lyrics <- song %>% 
+  dplyr::pull(song.id) %>% 
+  purrr::map_df(lyrics, 
+                artist = artist,
+                type = "id", 
+                key = key_vg)
+```
+
+```{r}
+lyrics %>% glimpse()
+``` 
+
+All good here too. The `Spotify` data is extracted with: 
+
+```{r, eval = FALSE}
+key_sp <- "your-authentication-key-to-spotify"
+
+find_artist <- searchArtist(artist, token = key_sp)
+muse_albums <- getAlbums(find_artist$id[1], token = key_sp)
+
+muse_songs <- muse_albums %>% 
+  dplyr::pull(id) %>% 
+  purrr::map_df(
+    ~{
+      getAlbum(.x, token = key_sp) %>% 
+        dplyr::select(id, name) 
+    }) %>% 
+  dplyr::unnest()
+
+features <- muse_songs %>% 
+  dplyr::pull(id) %>% 
+  purrr::map_df(getFeatures, token = key_sp) %>% 
+  dplyr::left_join(muse_songs, by = "id")
+```
+
+```{r}
+features <- read.table("data/muse/features_muse.txt")
+```
+
+```{r}
+features %>% glimpse() 
+```
+
+Good! Now we have the 3 datasets, which all came from different 
+sources. Our next step is to try to make the column that has the
+name of the song the most similar in the tree `data.frame`, with: 
+
+```{r}
+# Adjusting the name column for our datasets
+chords <- chords %>% 
+  dplyr::mutate(song = stringr::str_remove(music, "muse ")) %>% 
+  dplyr::select(-music)
+
+lyrics <- lyrics %>% 
+  dplyr::mutate(song = stringr::str_to_lower(song))
+
+features <- features %>% 
+  dplyr::mutate(song = stringr::str_to_lower(name)) %>% 
+  dplyr::select(-name)
+```
+
+We performed just some small changes, as making the name of the songs
+lower case and removing the name of the band from the song column. 
+We also created a column
+with the same name in the 3 datasets, so this will be standardized from
+now on. When we `inner_join` the data, there are some rows that don't
+match. This demonstrates that we'll have some work to do here to 
+minimize the damage: 
+
+```{r}
+unite_muse <- chords %>% 
+  dplyr::inner_join(lyrics, by = "song") %>% 
+  dplyr::inner_join(features, by = "song")
+  
+nrow(chords) - nrow(unite_muse)
+```
+
+727 is the total of rows that did not match between the three datasets. 
+Our next approach is to look closer in each data and think about
+how we can fix it. Let's see which song the chords and the lyrics 
+files *don't* have in common: 
+
+```{r}
+# Songs that didn't match between the chords and lyrics data
+anti_chords_lyrics <- chords %>% 
+  dplyr::anti_join(lyrics, by = "song") 
+
+anti_chords_lyrics %>% dplyr::distinct(song)
+```
+
+We have our mismatches. First, we'll remove those
+numbers from the `song` column in the chords data, and
+fix two songs that we know by eye that are wrong: 
+
+```{r}
+chords <- chords %>% 
+  dplyr::mutate(
+    song = stringr::str_remove(song, "[0-9]{2,7}$"), 
+    song = stringr::str_replace(song, " $", ""), 
+    song = ifelse(
+      stringr::str_detect(
+        song, "map of head|map of your head"), 
+      "map of your head", song),
+    song = ifelse(
+      stringr::str_detect(
+        song, "hyper music|hyper chondriac music"), 
+      "hyper music", song))
+```
+
+But we can't actually be fixing every song by eye. This can be 
+exhaustive and potentially lead to mistakes. We'll use a distance measure
+between the strings to get the next results. 
+
+The `RecordLinkage` package contains the `levenshteinSim` 
+function, that calculates a similarity measure based on
+the Levenshtein distance for two strings. There are different 
+functions in `R` that use Levenshtein, but this one in specific
+has a easy interpretation, since it returns a normalized number
+(between 0 and 1), being 1 the most similar possible. As for the 
+Levenshtein distance, this value is given by the minimum of 
+single-character edits needed to go from one string to another. 
+See more in (@Yujian2007). 
+
+Let's get back to the code. Below, we show how to find the most
+similar song names of the ones that didn't exactly match:  
+
+```{r}
+library(RecordLinkage)
+
+# Updating the anti_chords_lyrics
+anti_chords_lyrics <- chords %>% 
+  dplyr::anti_join(lyrics, by = "song") 
+
+# Saving names that didn't match
+names_to_fix <- anti_chords_lyrics %>% 
+  dplyr::distinct(song) %>% 
+  dplyr::pull(song)
+
+# Finding the distances between each song in the lyrics data and 
+# the ones that didn't match
+dists <- lyrics$song %>% 
+  purrr::map(levenshteinSim, str1 = names_to_fix)
+
+# Finding the biggest similarities between the songs 
+# in the lyrics data and the ones that didn't match
+ordered_dists <- dists %>% purrr::map_dbl(max)
+max_dists <- dists %>% purrr::map_dbl(which.max)
+
+# Filtering to have only similarities > 0.50
+indexes_min_dist <- which(ordered_dists > 0.50)
+songs_min_dist <- lyrics$song[indexes_min_dist]
+index_lyrics <- max_dists[which(ordered_dists > 0.50)]
+
+# Saving the most similar string in the chords and 
+# lyrics data 
+results_dist_lyrics <- data.frame(
+  from_chords = names_to_fix[index_lyrics],
+           from_lyrics = songs_min_dist)
+```
+
+```{r, echo = FALSE}
+results_dist_lyrics %>% knitr::kable()
+```
+
+The strings found with the `>0.5` criteria
+are actually quite similar, right? We can now transform the similar
+strings in only one version, so it will match in both datasets. We do
+it with the `case_when` function, as written below: 
+
+
+```{r}
+lyrics <- lyrics %>% 
+  dplyr::mutate(
+    song = 
+      dplyr::case_when( 
+        song == "hate this & i'll love you" ~ "hate this and ill love you",
+        song == "please, please, please let me get what i want" ~ "please please please let me get what want",          
+        song == "soldier's poem" ~ "soldiers poem",
+        song == "con-science" ~ "conscience",
+        song == "can't take my eyes off you" ~ "cant take my eyes off you",
+        song == "hyper chondriac music" ~ "hyper music",
+        song ==  "i belong to you/mon coeur s'ouvre à ta voix" ~ "i belong to you mon coeur souvre toi",
+        song ==  "neutron star collision (love is forever)" ~ "neutron star collision",
+        TRUE ~ song))
+
+```
+
+Now the `anti_join` of the two datasets is smaller and we are losing
+way less information :) 
+
+```{r}
+chords %>%  dplyr::anti_join(lyrics, by = "song") %>% dplyr::distinct(song) 
+```
+
+
+Note that you can use `paste` to create the syntax for `case_when` 
+automatically, something like:
+
+```{r, eval = FALSE}
+paste0(
+  paste0("song == ", "'", results_dist_lyrics$from_chords, "' ~ '", 
+         results_dist_lyrics$from_lyrics, "', "), collapse = "")
+```
+
+This was for the chords and lyrics datasets. We are setting the 
+chords data as the 'baseline', so every string we correct, is being
+corrected to the version found in the chords data. In the following, 
+we do the same procedure for the features data, we try to make
+it closer to the song names available in the chords extraction: 
+
+```{r}
+# Songs that didn't match between the chords and features data
+anti_chords_features <- chords %>% 
+  dplyr::anti_join(features, by = "song") 
+
+anti_chords_features %>% dplyr::distinct(song)
+```
+
+And finding the very similar strings: 
+
+```{r}
+names_to_fix <- anti_chords_features %>% 
+  dplyr::distinct(song) %>% 
+  dplyr::pull(song)
+
+dists <- features$song %>% 
+  purrr::map(levenshteinSim, str1 = names_to_fix)
+
+ordered_dists <- dists %>% purrr::map_dbl(max)
+index_dists <- dists %>% purrr::map_dbl(which.max)
+
+indexes_min_dist <- which(ordered_dists > 0.50)
+songs_min_dist <- features$song[indexes_min_dist]
+index_features <- index_dists[which(ordered_dists > 0.50)]
+
+results_dist_features <- data.frame(
+  from_chords = names_to_fix[index_features],
+  from_features = songs_min_dist)
+```
+
+```{r}
+results_dist_features %>% knitr::kable()
+```
+
+Again, we have strings that are very close and probably refer to the 
+same song (we can see it by eye). Let's use this information
+to correct the names of the song in the lyrics data: 
+
+```{r}
+features <- features %>% 
+  dplyr::mutate(
+    song = dplyr::case_when( 
+      song == "united states of eurasia (+collateral damage)" ~ 
+        "united states of eurasia",
+      song == "i belong to you (+mon coeur s'ouvre a ta voix)" ~ "i belong to you mon coeur souvre toi",          
+      song == "soldier's poem" ~ "soldiers poem",
+      song == "darkshines" ~ "dark shines",
+      song == "hate this and i'll love you" ~ "hate this and ill love you",
+      TRUE ~ song))
+
+chords %>%   
+  dplyr::anti_join(features, by = "song") %>% 
+  dplyr::distinct(song)
+```
+
+We reduced a little bit more our mismatches in the three datasets. 
+What can also happen is that a mismatch is not a result from 
+different ways of writing a song name, but of songs that really don't
+exist in all the three datasets. The final rows
+difference between the original and final data is: 
+
+```{r}
+final_data <- chords %>% 
+  dplyr::inner_join(lyrics, by = "song") %>% 
+  dplyr::inner_join(features, by = "song") 
+
+nrow(chords) - nrow(final_data) 
+```
+
+So we managed to 'save' more than 300 rows of the data by doing some small
+fixes in the key that connects the three datasets, and there is still
+plenty of room for improvements. The final glimpse of the data is:
+
+```{r}
+final_data %>% glimpse() 
+```
+
+Our final dataset combines 3 data sources and is very rich. We won't
+analyze it at this moment, but it's clear that the possibilities
+are infinite here. 
+
+## Wrap-up
+
+To combine datasets from different sources, one often challenge is:
+fix the mismatchings in the joining key. Here, we joined data from
+the `chorrds`, `vagalumeR` and `Rspotify` packages. The approaches
+to deal with mismatching song names were:
+
+  - Standardized column names and lower cases; 
+  - Fix some cases by eye;
+  - Use a distance measure to find the most similar strings. 
+
+We ended up by saving more than 300 rows of observations that
+would be wasted otherwise, and finished with a complete dataset,
+that contains information about the chords, the lyrics and the 
+Spotify variables of the *Muse* songs.  
+
