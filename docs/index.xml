@@ -15,6 +15,7 @@
       <description>A post about how the combine the data from different sources.</description>
       <guid>https://r-music.rbind.io/posts/2019-03-13-connecting-packages</guid>
       <pubDate>Wed, 13 Mar 2019 00:00:00 +0000</pubDate>
+      <media:content url="https://github.com/r-music/site/blob/master/img/connect.jpg?raw=true" medium="image" type="text/plain"/>
     </item>
     <item>
       <title>Introduction to the vagalumeR package</title>

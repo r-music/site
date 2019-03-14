@@ -2,7 +2,7 @@
 title: "Connecting packages"
 description: |
   A post about how the combine the data from different sources.
-preview: img/joins.png
+preview: https://github.com/r-music/site/blob/master/img/connect.jpg?raw=true
 author:
   - name: "Bruna Wundervald"
     url: https://brunaw.com
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Today we are going to talk a little about how to 'connect' the data
 obtained from different R-Music packages. For example, 
-the `chorrds`, `vagalumeR` and `Rspotify` packages can extract data for
+the `chorrrds`, `vagalumeR` and `Rspotify` packages can extract data for
 all of the songs of an artist. However, sometimes the name of the songs
 might not be written the same in the APIs or website
 (in the case of the `chorrrds` package). This means that some extra work
@@ -73,7 +73,7 @@ chords <- read.table("data/muse/chords_muse.txt")
 chords %>% glimpse()
 ``` 
 
-From the `glimpse` of the data, we can see that everything is as 
+From the `glimpse()` of the data, we can see that everything is as 
 expected. Next, we obtain the lyrics: 
 
 ```{r}
@@ -130,7 +130,7 @@ features %>% glimpse()
 
 Good! Now we have the 3 datasets, which all came from different 
 sources. Our next step is to try to make the column that has the
-name of the song the most similar in the tree `data.frame`, with: 
+name of the song the most similar in the tree `data.frames`, with: 
 
 ```{r}
 # Adjusting the name column for our datasets
@@ -198,15 +198,17 @@ But we can't actually be fixing every song by eye. This can be
 exhaustive and potentially lead to mistakes. We'll use a distance measure
 between the strings to get the next results. 
 
-The `RecordLinkage` package contains the `levenshteinSim` 
+The `RecordLinkage` package contains the `levenshteinSim()` 
 function, that calculates a similarity measure based on
 the Levenshtein distance for two strings. There are different 
-functions in `R` that use Levenshtein, but this one in specific
-has a easy interpretation, since it returns a normalized number
-(between 0 and 1), being 1 the most similar possible. As for the 
-Levenshtein distance, this value is given by the minimum of 
-single-character edits needed to go from one string to another. 
-See more in (@Yujian2007). 
+functions in `R` that use Levenshtein, and even a `join` 
+package that uses it (`fuzzyjoin`, available on CRAN),
+but this one in specific has a easy interpretation, since it returns
+a normalized number (between 0 and 1), being 1 the most similar 
+possible. Besides that, we want to verify by eye when the strings
+are in fact very similar. As for the Levenshtein distance, this value 
+is given by the minimum of single-character edits needed to go from one 
+string to another. See more in (@Yujian2007). 
 
 Let's get back to the code. Below, we show how to find the most
 similar song names of the ones that didn't exactly match:  
@@ -252,7 +254,7 @@ results_dist_lyrics %>% knitr::kable()
 The strings found with the `>0.5` criteria
 are actually quite similar, right? We can now transform the similar
 strings in only one version, so it will match in both datasets. We do
-it with the `case_when` function, as written below: 
+it with the `case_when()` function, as written below: 
 
 
 ```{r}
@@ -272,7 +274,7 @@ lyrics <- lyrics %>%
 
 ```
 
-Now the `anti_join` of the two datasets is smaller and we are losing
+Now the `anti_join()` of the two datasets is smaller and we are losing
 way less information :) 
 
 ```{r}
@@ -280,11 +282,11 @@ chords %>%  dplyr::anti_join(lyrics, by = "song") %>% dplyr::distinct(song)
 ```
 
 
-Note that you can use `paste` to create the syntax for `case_when` 
+Note that you can use `paste` to create the syntax for `case_when()` 
 automatically, something like:
 
 ```{r, eval = FALSE}
-paste0(
+cat(
   paste0("song == ", "'", results_dist_lyrics$from_chords, "' ~ '", 
          results_dist_lyrics$from_lyrics, "', "), collapse = "")
 ```
@@ -380,7 +382,7 @@ are infinite here.
 
 To combine datasets from different sources, one often challenge is:
 fix the mismatchings in the joining key. Here, we joined data from
-the `chorrds`, `vagalumeR` and `Rspotify` packages. The approaches
+the `chorrrds`, `vagalumeR` and `Rspotify` packages. The approaches
 to deal with mismatching song names were:
 
   - Standardized column names and lower cases; 
