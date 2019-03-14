@@ -55,8 +55,7 @@ library(Rspotify)
 artist <- "muse"
 ```
 
-Here, we'll be working with the data about *Muse*,  
-a very well known British rock band. Below, we proceed by obtaining the
+Here, we'll be working with the data about *Muse*, a very well known British rock band. Below, we proceed by obtaining the
 music chords for the band: 
 
 ```{r, eval = FALSE}
