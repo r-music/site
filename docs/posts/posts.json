@@ -2,7 +2,7 @@
   {
     "path": "posts/2019-03-13-connecting-packages/",
     "title": "Connecting packages",
-    "description": "A post about how the combine the data from different sources.",
+    "description": "A post about how to combine the data from different sources.",
     "author": [
       {
         "name": "Bruna Wundervald",
@@ -12,7 +12,7 @@
     "date": "2019-03-13",
     "categories": [],
     "preview": "https://github.com/r-music/site/blob/master/img/connect.jpg?raw=true",
-    "last_modified": "2019-03-14T16:11:28+00:00"
+    "last_modified": "2019-03-14T16:13:23+00:00"
   },
   {
     "path": "posts/2018-11-22-introduction-to-the-vagalumer-package/",
