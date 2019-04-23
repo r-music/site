@@ -75,7 +75,7 @@ chords %>% glimpse()
 From the `glimpse()` of the data, we can see that everything is as 
 expected. Next, we obtain the lyrics: 
 
-```{r}
+```{r, echo = FALSE}
 lyrics <- read.table("data/muse/lyrics_muse.txt")
 ```
 
@@ -111,7 +111,7 @@ muse_songs <- muse_albums %>%
       getAlbum(.x, token = key_sp) %>% 
         dplyr::select(id, name) 
     }) %>% 
-  dplyr::unnest()
+  tidyr::unnest()
 
 features <- muse_songs %>% 
   dplyr::pull(id) %>% 
@@ -119,7 +119,7 @@ features <- muse_songs %>%
   dplyr::left_join(muse_songs, by = "id")
 ```
 
-```{r}
+```{r, echo = FALSE}
 features <- read.table("data/muse/features_muse.txt")
 ```
 

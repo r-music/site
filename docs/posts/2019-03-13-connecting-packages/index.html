@@ -1396,8 +1396,7 @@ $ music &lt;fct&gt; muse a crying shame, muse a crying shame, muse a cryi…</co
 </div>
 <p>From the <code>glimpse()</code> of the data, we can see that everything is as expected. Next, we obtain the lyrics:</p>
 <div class="layout-chunk" data-layout="l-body">
-<pre class="r"><code>
-lyrics &lt;- read.table(&quot;data/muse/lyrics_muse.txt&quot;)</code></pre>
+
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -1441,7 +1440,7 @@ muse_songs &lt;- muse_albums %&gt;%
       getAlbum(.x, token = key_sp) %&gt;% 
         dplyr::select(id, name) 
     }) %&gt;% 
-  dplyr::unnest()
+  tidyr::unnest()
 
 features &lt;- muse_songs %&gt;% 
   dplyr::pull(id) %&gt;% 
@@ -1449,8 +1448,7 @@ features &lt;- muse_songs %&gt;%
   dplyr::left_join(muse_songs, by = &quot;id&quot;)</code></pre>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<pre class="r"><code>
-features &lt;- read.table(&quot;data/muse/features_muse.txt&quot;)</code></pre>
+
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
