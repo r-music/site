@@ -23,10 +23,13 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+*Note: This post was update on 17/03/2020 due to some changes with the new version of the package.*
+
 ## Intro
 
-`chorrrds` is a package to retrieve and analyse music data. It scrapes 
-the [*Cifraclub*]() website to download and organize music chords.
+`chorrrds` is a package to retrieve and analyse music chords data. 
+It scrapes the [*Cifraclub*](cifraclub.com.br/)
+website to download and organize music chords.
 
 The main reason to create `chorrrds` was my undergrad thesis. In 
 my work, I did an end-to-end analysis, exploring feature engineering
@@ -74,7 +77,7 @@ set.seed(20191)
 # Step 1: Getting the chords for some Janis Joplin songs
 songs <- "janis-joplin" %>% 
   chorrrds::get_songs() %>% 
-  dplyr::sample_n(5)        # Selecting a random sample of 5 pieces 
+  dplyr::sample_n(5)        # Just selecting a random sample of 5 songs 
 
 # Step 2: getting the chords for the selected songs
 chords <- songs %>% 
@@ -115,37 +118,18 @@ chords %>% slice(1:10) %>% knitr::kable()
 
 The table above shows us how are the results of the `get_chords`
 function. As you can see, the data is in a long format: the chords 
-appear in the sequence they are in each music, being repeated
-sometimes. The `music` column contains the name of the artist
-and the name of the song. This can be changed if preferred, 
-with: 
-
-```{r, eval = FALSE}
-chords <- chords %>% 
-  tidyr::separate(music, c("artist", "music"), 
-                  sep = "(?<=joplin) ", extra = "merge")
+appear in the sequence they are in each song, being repeated
+sometimes. 
 
 
-chords %>% slice(1:10) 
-```
-
-
-```{r, echo = FALSE}
-chords <- chords %>% 
-  tidyr::separate(music, c("artist", "music"), 
-                  sep = "(?<=joplin) ", extra = "merge")
-
-
-chords %>% slice(1:10) %>% knitr::kable()
-```
 ## Data
 
-There are many datasets that come with the package. They were
-used in the undergrad thesis, so it was a choice just to keep it 
-in the package. The data is composed of several Brazilian artists
-music chords. You can check the available datasets with the 
-code above, which won't be run here because the results 
-are long: 
+There are actually many datasets that come built-in
+with the package. They have been previously used in my
+undergrad thesis, so they were just kept in the package to
+work as example data. These data are composed of several 
+Brazilian artists music chords. You can check the available 
+datasets with the  code above: 
 
 ```{r, eval = FALSE}
 library(chorrrds)
@@ -164,7 +148,7 @@ similar between the songs?
 
 ```{r, eval = FALSE}
 chords %>% 
-  dplyr::group_by(music) %>% 
+  dplyr::group_by(song) %>% 
   dplyr::count(chord) %>%
   dplyr::top_n(n, n = 3) %>%
   dplyr::mutate(prop = scales::percent(n/sum(n))) 
@@ -173,7 +157,7 @@ chords %>%
 
 ```{r, echo = FALSE}
 chords %>% 
-  dplyr::group_by(music) %>% 
+  dplyr::group_by(song) %>% 
   dplyr::count(chord) %>%
   dplyr::top_n(n, n = 3) %>%
   dplyr::mutate(prop = scales::percent(n/sum(n))) %>% 
@@ -181,44 +165,44 @@ chords %>%
 ```
 
 With the dataset analyzed here, we can already
-obtain some interesting information. For some of it, 
-as the first and second pieces, the 3 most common chords 
-appeared in a close proportion. For the others,
-this happens in a different way. Both the proportions and
-the absolute quantities of the chords vary more.
+obtain some interesting information. For instance, 
+we can observe a quite varying difference between the 
+most common chords proportions, there is no clear rule. 
 That shows us that the structure of her songs 
-don't follow a closed pattern, which can be a sign of how 
+might not follow a closed pattern, which can be a sign of how 
 creative the artist was. 
 
 We can also look at something called "chord bigrams". This
 is pretty much the task of creating pairs of chords that 
-happened in sequence, by music, and analyze their frequencies. 
+happened in sequence, by song, and analyze their frequencies, 
+and it's done with the `chords_ngram()` function
 
 ```{r, eval = FALSE}
 chords %>%
-  dplyr::group_by(music) %>% 
-  tidytext::unnest_tokens(bigram, chord, to_lower = FALSE,
-                          token = "ngrams", n = 2) %>% 
-  dplyr::count(bigram) %>% 
+  split(.$song) %>% 
+  purrr:::map(chorrrds::chords_ngram, n = 2) %>% 
+  dplyr::bind_rows() %>% 
+  dplyr::group_by(song) %>% 
+  dplyr::count(chords_ngram) %>% 
   dplyr::top_n(n, n = 2) 
 ```
 
 ```{r, echo = FALSE}
 chords %>%
-  dplyr::group_by(music) %>% 
-  tidytext::unnest_tokens(bigram, chord, to_lower = FALSE,
-                          token = "ngrams", n = 2) %>% 
-  dplyr::count(bigram) %>% 
-  dplyr::top_n(n, n = 2) %>%
+  split(.$song) %>% 
+  purrr:::map(chorrrds::chords_ngram, n = 2) %>% 
+  dplyr::bind_rows() %>% 
+  dplyr::group_by(song) %>% 
+  dplyr::count(chords_ngram) %>% 
+  dplyr::top_n(n, n = 2) %>% 
   knitr::kable()
 ```
 
-
 There are some bigrams that happen a lot in a song, while 
 others just a few times, but are still the most frequent ones. In 
-the song called "Piece of my heart", we have the repetition
-of the chord "B", which is described by the appearance of 
-the "B B" bigram. 
+the song called "A Woman Left Lonely", for example,
+we have only two chords sequences(Bb -> F and G -> C), 
+which is harmonically interesting to observe. 
 
 
 Now, we have already explored the data a little bit. We can
@@ -242,7 +226,7 @@ comp <- chords %>%
   dplyr::summarise(n = n())
 
 mat <- tidyr::spread(comp, key = chord, value = n, fill = 0)  
-mm <- as.matrix(mat[-19, -1]) 
+mm <- as.matrix(mat[, -1]) 
 
 # Building the chords diagram
 chorddiag::chorddiag(mm, showTicks = FALSE,
