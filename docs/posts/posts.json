@@ -1,5 +1,24 @@
 [
   {
+    "path": "posts/2021-04-03-gm/",
+    "title": "Introduction to the gm package",
+    "description": "Create music easily, and show musical scores and audio files in R Markdown documents, R Jupyter Notebooks and RStudio",
+    "author": [
+      {
+        "name": "Renfei Mao",
+        "url": "Renfei Mao"
+      },
+      {
+        "name": "Bruna Wundervald",
+        "url": "https://brunaw.com"
+      }
+    ],
+    "date": "2021-04-03",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2021-04-03T15:42:43+01:00"
+  },
+  {
     "path": "posts/2019-03-13-connecting-packages/",
     "title": "Connecting packages",
     "description": "A post about how to combine the data from different sources.",
@@ -88,6 +107,6 @@
     "date": "2018-08-19",
     "categories": [],
     "preview": {},
-    "last_modified": "2020-03-17T14:49:29+00:00"
+    "last_modified": "2020-03-17T14:49:30+00:00"
   }
 ]
